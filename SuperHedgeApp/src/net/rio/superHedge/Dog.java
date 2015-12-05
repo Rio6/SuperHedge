@@ -1,4 +1,4 @@
-/*
+/**
  * Dog.java
  */
 package net.rio.superHedge;
@@ -13,7 +13,7 @@ import android.content.Context;
 
 class Dog extends Entity {
 	
-	private int cnt = (int) (Math.random() * 1200 + 1);
+	private int cnt = 400;
 
 	/**
 	 * 
@@ -29,10 +29,10 @@ class Dog extends Entity {
 
 	@Override
 	void tick() {
-		if(cnt < 800 && cnt >= 600) advMove(2, 6);
-		else if(cnt < 200) advMove(0, 6);
+		if(cnt >= 300) advMove(2, 4);
+		else if(cnt >= 100 && cnt < 200) advMove(0, 4);
 		cnt--;
-		if(cnt == 0) cnt = 1200;
+		if(cnt == 0) cnt = 400;
 		
 		advMove(3, GRAVITY / 2);
 	}

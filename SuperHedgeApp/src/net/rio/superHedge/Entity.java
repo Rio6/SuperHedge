@@ -1,4 +1,4 @@
-/*
+/**
  * Entity.java
  */
 package net.rio.superHedge;
@@ -16,6 +16,7 @@ abstract class Entity {
 	
 	protected int type, id;
 	protected int[] pos, size, data;
+	protected boolean pushable = true;
 	
 	protected Bitmap oriImg;
 	protected Bitmap img = null;
@@ -81,6 +82,12 @@ abstract class Entity {
 		return rule.moveTo(dir);	//check if this entity is touched to others
 	}
 	
+	/**
+	 * advance move for entity, can override this for turning or other stuff
+	 * @param dir
+	 * @param speed
+	 * @return
+	 */
 	boolean advMove(int dir, int speed) {
 		return move(dir, speed);
 	}

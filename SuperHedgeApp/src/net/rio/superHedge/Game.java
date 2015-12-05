@@ -1,4 +1,4 @@
-/*
+/**
  * Game.java
 */
 package net.rio.superHedge;
@@ -46,6 +46,7 @@ class Game extends View {
 	
 	private int[] ctrl = {0, 0, 0};
 	private int cnt = 0;
+	private boolean running;
 	
 	private static int stat;
 
@@ -62,6 +63,7 @@ class Game extends View {
 		/*setting variables*/
 		this.con = con;
 		stat = Game.HEG_NORMAL;
+		running = false;
 		
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
@@ -143,6 +145,10 @@ class Game extends View {
 		ctrl[1] = stat;
 	}
 	
+	void start() {
+		running = true;
+	}
+	
 	/**
 	 * call this every tick
 	 * @return status of game
@@ -153,18 +159,20 @@ class Game extends View {
 	 */
 	int tick() {
 		
-		for(int i = 0; i < ents.length; i++) {
-			if(ents[i] == null) continue;
-			ents[i].tick();			
-		}
-		
-		for(int i = 0; i < ctrl.length; i++) {
-			if(ctrl[i] != 0) {
-				ents[0].advMove(i, ctrl[i]);
+		if(running) {
+			for(int i = 0; i < ents.length; i++) {
+				if(ents[i] == null) continue;
+				ents[i].tick();			
 			}
+			
+			for(int i = 0; i < ctrl.length; i++) {
+				if(ctrl[i] != 0) {
+					ents[0].advMove(i, ctrl[i]);
+				}
+			}
+			
+			invalidate();
 		}
-		
-		invalidate();
 		
 		return stat;
 	}

@@ -1,3 +1,6 @@
+/**
+ * Wall.java
+ */
 package net.rio.superHedge;
 
 import android.content.Context;
@@ -19,12 +22,11 @@ public class Wall extends Entity {
 	 */
 	public Wall(Context con, int[] pos, int id, int... data) {
 		super(con, 5, pos, data, id, 0);
+		pushable = false;
 	}
 
 	@Override
-	void tick() {
-
-	}
+	void tick() {}
 
 	@Override
 	void touched(Entity ent) {}

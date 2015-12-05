@@ -1,4 +1,4 @@
-/*
+/**
  * Portal.java
  */
 package net.rio.superHedge;
@@ -15,14 +15,11 @@ class Portal extends Entity {
 	 */
 	public Portal(Context con, int[] pos, int id, int... data) {
 		super(con, 1, pos, new int[]{40, 100}, id, data);
-		// TODO Auto-generated constructor stub
+		pushable = false;
 	}
 
 	@Override
-	void tick() {
-		// TODO Auto-generated method stub
-
-	}
+	void tick() {}
 
 	@Override
 	void touched(Entity ent) {

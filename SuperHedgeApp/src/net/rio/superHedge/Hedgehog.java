@@ -1,4 +1,4 @@
-/*
+/**
  * Hedgehog.java
  */
 package net.rio.superHedge;
@@ -35,8 +35,6 @@ class Hedgehog extends Entity {
 
 	@Override
 	void touched(Entity ent) {
-		if(ent.type == 3)
-			rule.removeEnt(GameRule.ENTITY_DIE, id);
 	}
 	
 	public void jump() {

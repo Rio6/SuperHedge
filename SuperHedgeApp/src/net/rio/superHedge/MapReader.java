@@ -1,4 +1,4 @@
-/*
+/**
  * MapReader.java
  */
 package net.rio.superHedge;

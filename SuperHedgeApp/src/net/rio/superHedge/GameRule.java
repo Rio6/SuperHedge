@@ -1,4 +1,4 @@
-/*
+/**
  * GameRule.java
  */
 package net.rio.superHedge;
@@ -30,7 +30,7 @@ class GameRule {
 	}
 	
 	/**
-	 * if the entity who calls this is touched by another entity, this method will move it back 
+	 * if the entity who calls this is touched by another entity, this method will move the entity
 	 * @param dir moving direction
 	 * @return true if this move hits another entity
 	 */
@@ -42,7 +42,7 @@ class GameRule {
 				continue;
 			if(entsTouched(ents[id], ents[i])) {
 				
-				if(ents[i].type == 5) {
+				if(!ents[i].pushable) { //the entity is pushing is not pushable
 					switch(dir) {
 					case 0:
 						ents[id].move(2, ents[i].pos[0] + ents[i].size[0] - ents[id].pos[0]);

@@ -27,54 +27,44 @@ import android.view.WindowManager;
 class Game extends View {
 	
 	/**
-	 * normal running
-	 */
-	static final int HEG_NORMAL = 0;
-	
-	/**
 	 * start a new game
 	 */
-	static final int HEG_NEWGAME = 1;
-	
-	/**
-	 * level finished
-	 */
-	static final int HEG_FINISHED = 2;
+	static final int HEG_NEWGAME = 0;
 	
 	/**
 	 * game over, retry
 	 */
-	static final int HEG_DIED = 3;
+	static final int HEG_DIED = 1;
+	
+	private static Main main;
 	
 	private Paint paint;
 	private Entity[] ents;
-	private Context con;
-	private Bitmap aplImg;
+	private Bitmap aplImg, pauseImg;
 	private GameRule rule;
 
 	private static int cnt = 0;
 	
 	private int[] ctrl = {0, 0, 0};
 	private int level;
-	
-	private static int stat;
 
-	public Game(Context con, int level) {
-		super(con);
+	public Game(Main main, int level) {
+		super(main);
 		
 		/*setting variables*/
-		this.con = con;
+		Game.main = main;
 		this.level = level;
-		stat = Game.HEG_NORMAL;
 		cnt = -1;
 		
 		paint = new Paint();
 		paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 		
-		aplImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(con.getResources(),
+		aplImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(main.getResources(),
 				R.drawable.apple), 30, 40, false);
+		pauseImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(main.getResources(),
+				R.drawable.pause), 30, 30, false);
 		
-		setupEnts(new MapReader(con, level));
+		setupEnts(new MapReader(main, level));
 		
 		rule = new GameRule(-1);
 		rule.setEnts(ents);
@@ -110,15 +100,15 @@ class Game extends View {
 	private Entity getEntFromType(int type, int[] pos, int id, int[] data) {
 		switch(type) {
 		case 0:
-			return new Hedgehog(con, pos, id, data);
+			return new Hedgehog(main, pos, id, data);
 		case 1:
-			return new Portal(con, pos, id, data);
+			return new Portal(main, pos, id, data);
 		case 2:
-			return new Apple(con, pos, id, data);
+			return new Apple(main, pos, id, data);
 		case 3:
-			return new Dog(con, pos, id, data);
+			return new Dog(main, pos, id, data);
 		case 4:
-			return new Wall(con, pos, id, data);
+			return new Wall(main, pos, id, data);
 		default:
 			return null;
 		}
@@ -157,7 +147,7 @@ class Game extends View {
 	 * @see Game.HEG_FINISH
 	 * @see Game.HEG_DIE
 	 */
-	int tick() {
+	void tick() {
 		
 		if(cnt == 0) {
 			for(int i = 0; i < ents.length; i++) {
@@ -172,48 +162,55 @@ class Game extends View {
 			}
 		} else {
 			if(cnt < -200) {
-				stat = Game.HEG_DIED;
+				main.newGame(Game.HEG_DIED);
 			}
 			cnt--;
 		}
 		
 		invalidate();
 		
-		return stat;
 	}
 	
 	@Override
 	protected void onDraw(Canvas can) {
 		can.drawColor(Color.parseColor("#808080"));
 		
-		if(cnt == 0) {
+		if(cnt == 0) {		//the game is running normally
+			
 			for(int i = 0; i < ents.length; i++) {
 				if(ents[i] == null) continue;
 				can.drawBitmap(ents[i].getImg(), (int) (ents[i].pos[0] * (Main.scrW / 750f)), (int) (ents[i].pos[1] * (Main.scrH / 500f)), paint);
 			}
 			
-			can.drawBitmap(aplImg, 10, 10, paint);
-			can.drawText(" = " + rule.getApls() , 40, 50, paint);
-		} else if(cnt > 0) {
+			can.drawBitmap(aplImg, Main.scrW - 120, 10, paint);
+			can.drawText(" = " + rule.getApls() , Main.scrW - 90, 50, paint);
+			
+			can.drawBitmap(pauseImg, 20, 10, paint);
+			
+		} else if(cnt > 0) {		//the game is in start screen
+			
 			paint.setColor(Color.YELLOW);
 			paint.setTextSize(100);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
-			can.drawText(con.getString(R.string.level) + (level + 1), Main.scrW / 2, 300, paint);
+			can.drawText(main.getString(R.string.level) + (level + 1), Main.scrW / 2, 300, paint);
 			
 			paint.setColor(Color.BLACK);
 			paint.setTextSize(40);
 			paint.setTextAlign(Paint.Align.LEFT);
-		} else if(cnt < 0) {
+			
+		} else if(cnt < 0) {		//the game is in dieing screen
+			
 			paint.setColor(Color.YELLOW);
 			paint.setTextSize(100);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
-			can.drawText(con.getString(R.string.game_over), Main.scrW / 2, 300, paint);
+			can.drawText(main.getString(R.string.game_over), Main.scrW / 2, 300, paint);
 			
 			paint.setColor(Color.BLACK);
 			paint.setTextSize(40);
 			paint.setTextAlign(Paint.Align.LEFT);
+			
 		}
 		
 	}
@@ -223,7 +220,11 @@ class Game extends View {
 	 * change stat and tick() will return it to main
 	 */
 	static void newGame(int stat) {
-		cnt = -1;
+		if(stat == Game.HEG_NEWGAME)
+			main.newGame(Game.HEG_NEWGAME);
+		
+		else if(stat == Game.HEG_DIED)
+			cnt = -1;
 	}
 
 }

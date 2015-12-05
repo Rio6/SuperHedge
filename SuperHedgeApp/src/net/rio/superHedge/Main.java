@@ -63,9 +63,7 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 		/*setting runnable*/
 		run = new Runnable() {
 			public void run() {
-				int stat = game.tick();
-				if(stat == Game.HEG_FINISHED || stat == Game.HEG_DIED)
-					newGame(stat);
+				game.tick();
 				if(isRunning)
 					han.postDelayed(this, 10);
 			}

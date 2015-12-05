@@ -4,5 +4,6 @@
     <string name="app_name">SuperHedge</string>
     <string name="play">PLAY</string>
     <string name="level">LEVEL</string>
+    <string name="game_over">GAME OVER</string>
 
 </resources>

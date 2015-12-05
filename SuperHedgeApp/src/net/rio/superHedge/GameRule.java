@@ -110,8 +110,4 @@ class GameRule {
 		return apls;
 	}
 	
-	void newGame() {
-		Game.newGame(Game.HEG_FINISHED);
-	}
-	
 }

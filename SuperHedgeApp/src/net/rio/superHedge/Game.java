@@ -51,10 +51,11 @@ class Game extends View {
 	private Context con;
 	private Bitmap aplImg;
 	private GameRule rule;
+
+	private static int cnt = 0;
 	
 	private int[] ctrl = {0, 0, 0};
 	private int level;
-	private int cnt = 0;
 	
 	private static int stat;
 
@@ -169,11 +170,14 @@ class Game extends View {
 					ents[0].advMove(i, ctrl[i]);
 				}
 			}
-			
-			invalidate();
 		} else {
+			if(cnt < -200) {
+				stat = Game.HEG_DIED;
+			}
 			cnt--;
 		}
+		
+		invalidate();
 		
 		return stat;
 	}
@@ -190,12 +194,22 @@ class Game extends View {
 			
 			can.drawBitmap(aplImg, 10, 10, paint);
 			can.drawText(" = " + rule.getApls() , 40, 50, paint);
-		} else {
+		} else if(cnt > 0) {
 			paint.setColor(Color.YELLOW);
 			paint.setTextSize(100);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
 			can.drawText(con.getString(R.string.level) + (level + 1), Main.scrW / 2, 300, paint);
+			
+			paint.setColor(Color.BLACK);
+			paint.setTextSize(40);
+			paint.setTextAlign(Paint.Align.LEFT);
+		} else if(cnt < 0) {
+			paint.setColor(Color.YELLOW);
+			paint.setTextSize(100);
+			paint.setTextAlign(Paint.Align.CENTER);
+			
+			can.drawText(con.getString(R.string.game_over), Main.scrW / 2, 300, paint);
 			
 			paint.setColor(Color.BLACK);
 			paint.setTextSize(40);
@@ -209,7 +223,7 @@ class Game extends View {
 	 * change stat and tick() will return it to main
 	 */
 	static void newGame(int stat) {
-		Game.stat = stat;
+		cnt = -1;
 	}
 
 }

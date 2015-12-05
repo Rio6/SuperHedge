@@ -38,7 +38,9 @@ class Dog extends Entity {
 	}
 
 	@Override
-	void touched(Entity ent) {}
+	void touched(Entity ent) {
+		if(ent.type == 0) Game.newGame(Game.HEG_DIED);
+	}
 
 	
 	@Override

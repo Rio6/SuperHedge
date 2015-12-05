@@ -3,7 +3,6 @@ package net.rio.superHedge;
 import android.content.Context;
 import android.graphics.*;
 import android.view.*;
-import android.view.ViewGroup.LayoutParams;
 
 /**
  * the item in the menu
@@ -31,7 +30,7 @@ class MenuItem extends View implements View.OnTouchListener {
 		super(con);
 		this.menu = menu;
 		
-		setLayoutParams(new LayoutParams(width, height));
+		setLayoutParams(new ViewGroup.LayoutParams(width, height));
 		setOnTouchListener(this);
 		
 		this.txt = txt;

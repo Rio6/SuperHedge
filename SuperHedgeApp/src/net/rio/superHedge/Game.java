@@ -3,21 +3,10 @@
 */
 package net.rio.superHedge;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.*;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Typeface;
-import android.view.Display;
+import android.graphics.*;
 import android.view.View;
-import android.view.WindowManager;
 
 /**
  * game manage of Super Hedge

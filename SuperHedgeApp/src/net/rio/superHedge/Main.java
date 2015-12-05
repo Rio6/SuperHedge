@@ -6,24 +6,16 @@ package net.rio.superHedge;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.Display;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.WindowManager;
+import android.hardware.*;
+import android.os.*;
+import android.view.*;
 
 /**
  * Main class in SuperHedge
  * @author rio
  *
  */
-public class Main extends Activity implements SensorEventListener, OnTouchListener {
+public class Main extends Activity implements SensorEventListener, View.OnTouchListener {
 	
 	static final int STAT_MENU = 0;	
 	static final int STAT_GAME = 1;

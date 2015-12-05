@@ -3,47 +3,38 @@
  */
 package net.rio.superHedge;
 
-import android.content.Context;
-import android.graphics.*;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
+import android.view.*;
 import android.widget.*;
 
 /**
+ * this class is the start menu 
  * @author rio
  *
  */
 class Menu extends RelativeLayout {
+	
+	Main main;
 
 	/**
-	 * 
+	 * @param main the main class of game
 	 */
-	public Menu(Context con) {
-		super(con);
-		setBackground(con.getResources().getDrawable(R.drawable.background));
+	public Menu(Main main) {
+		super(main);
+		this.main = main;
+		
+		setBackground(main.getResources().getDrawable(R.drawable.background));
 		setGravity(Gravity.CENTER);
 		
-		MenuItem btn = new MenuItem(con, 500, 200);
-		addView(btn);
+		MenuItem playBtn = new MenuItem(main, this, Main.scrW / 3, Main.scrH / 5, main.getString(R.string.play));
+		
+		addView(playBtn);
 	}
 	
-}
-
-
-class MenuItem extends View {
-	
-	Paint paint = new Paint();
-
-	public MenuItem(Context context, int width, int height) {
-		super(context);
-		setLayoutParams(new LayoutParams(width, height));
-	}
-	
-	@Override
-	protected void onDraw(Canvas can) {
-		can.drawColor(Color.rgb(80, 80, 80));
-		can.drawText("test", 100, 100, paint);
+	/**
+	 * the MenuItem has been clicked
+	 */
+	void onClick(View v) {
+		main.newGame(Game.HEG_NEWGAME);
 	}
 	
 }

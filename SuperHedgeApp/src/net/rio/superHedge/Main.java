@@ -40,7 +40,7 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 	
 	private int curLevel;
 	private boolean isRunning;
-	private int stat;
+	private int gameStat;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +55,6 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 		display.getSize(size);
 		scrW = size.x;
 		scrH = size.y;
-		
-		/*setting variables*/
-		stat = Main.STAT_MENU;
 		
 		/*setting seneor*/
 		mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -80,9 +77,8 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		if(stat == Main.STAT_GAME) {
+		if(gameStat == Main.STAT_GAME) 
 			game.phoneMoved(((int) event.values[1]) * 2);	
-		}
 	}
 
 	@Override
@@ -92,10 +88,7 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 	protected void onResume() {
 		mgr.registerListener(this, sr, SensorManager.SENSOR_DELAY_FASTEST);
 		
-		if(stat == Main.STAT_GAME) {
-			isRunning = true;
-			han.postDelayed(run, 10);
-		}
+		strtTick();
 		
 		super.onResume();
 	}
@@ -108,22 +101,36 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 		
 		super.onPause();
 	}
+	
+	private void strtTick() {
+		
+		if(gameStat == Main.STAT_GAME && !isRunning) {
+			isRunning = true;
+			han.postDelayed(run, 10);
+		}		
+		
+	}
 
 	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		if(event.getAction() == MotionEvent.ACTION_DOWN) {
-			game.screenTouched(1);
-		} else if(event.getAction() == MotionEvent.ACTION_UP) {
+	public boolean onTouch(View v, MotionEvent eve) {
+		
+		if(eve.getAction() == MotionEvent.ACTION_DOWN) {
+			if(eve.getX() < 60 && eve.getY() < 60)
+				showMenu();
+			else
+				game.screenTouched(1);
+		} else if(eve.getAction() == MotionEvent.ACTION_UP) {
 			game.screenTouched(0);
 		}
 	    return true;
+	    
 	}
 	
-	private void newGame(int stat) {
-		int level = 0;
+	void newGame(int stat) {
+		gameStat = Main.STAT_GAME;
+		strtTick();
 		
-		if(level > 0)
-			level = 0;
+		int level = 0;
 		
 		game = new Game(this, level);
 		game.setOnTouchListener(this);
@@ -133,6 +140,8 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 	}
 
 	private void showMenu() {
+		gameStat = Main.STAT_MENU;
+		isRunning = false;
 		menu = new Menu(this);
 		setContentView(menu);
 	}

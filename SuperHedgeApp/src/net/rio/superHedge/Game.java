@@ -68,7 +68,7 @@ class Game extends View {
 		cnt = -1;
 		
 		paint = new Paint();
-		paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
+		paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 		
 		aplImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(con.getResources(),
 				R.drawable.apple), 30, 40, false);
@@ -195,9 +195,13 @@ class Game extends View {
 		} else {
 			paint.setColor(Color.YELLOW);
 			paint.setTextSize(100);
-			can.drawText("LEVEL " + (level + 1), Main.scrW / 2 - 200, 300, paint);
+			paint.setTextAlign(Paint.Align.CENTER);
+			
+			can.drawText(con.getString(R.string.level) + (level + 1), Main.scrW / 2, 300, paint);
+			
 			paint.setColor(Color.BLACK);
 			paint.setTextSize(40);
+			paint.setTextAlign(Paint.Align.LEFT);
 		}
 		
 	}

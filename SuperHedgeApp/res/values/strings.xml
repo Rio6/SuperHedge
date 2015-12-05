@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">SuperHedge</string>
+    <string name="play">PLAY</string>
+    <string name="level">LEVEL</string>
 
 </resources>

@@ -21,7 +21,7 @@ class Wall extends Entity {
 	 * @param data size of this wall
 	 */
 	public Wall(Context con, int[] pos, int id, int... data) {
-		super(con, 5, pos, data, id, 0);
+		super(con, 4, pos, data, id, 0);
 		pushable = false;
 	}
 

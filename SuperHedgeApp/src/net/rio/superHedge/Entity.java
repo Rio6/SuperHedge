@@ -134,8 +134,6 @@ abstract class Entity {
 		case 3:
 			return "dog";
 		case 4:
-			return "speedwall";
-		case 5:
 			return "wall";
 		}
 		return null;

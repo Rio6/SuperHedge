@@ -117,8 +117,6 @@ class Game extends View {
 		case 3:
 			return new Dog(con, pos, id, data);
 		case 4:
-			return null;
-		case 5:
 			return new Wall(con, pos, id, data);
 		default:
 			return null;

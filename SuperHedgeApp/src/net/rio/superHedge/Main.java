@@ -50,8 +50,6 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 		curLevel = 0;
 		newGame(Game.HEG_NEWGAME);
 		
-		game.start();
-		
 	}
 
 	@Override
@@ -100,6 +98,8 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 		game = new Game(this, level);
 		game.setOnTouchListener(this);
 		setContentView(game);
+		
+		game.start();
 	}
 
 }

@@ -55,12 +55,15 @@ class MenuItem extends View implements View.OnTouchListener {
 		
 		if(eve.getX() > getWidth() || eve.getX() < 0 || eve.getY() > getHeight() || eve.getY() < 0) {
 			color = Color.parseColor("#808080");
+			paint.setColor(Color.BLACK);
 			preDwn = false;
 		} else	if(eve.getAction() == MotionEvent.ACTION_DOWN) {
 			color = Color.parseColor("#202020");
+			paint.setColor(Color.YELLOW);
 			preDwn = true;
 		} else if(eve.getAction() == MotionEvent.ACTION_UP && preDwn) {
 			color = Color.parseColor("#808080");
+			paint.setColor(Color.BLACK);
 			menu.onClick(v);
 			preDwn = false;
 		}

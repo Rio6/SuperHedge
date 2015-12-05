@@ -121,7 +121,10 @@ class Game extends View {
 	 * @param stat 1 if down, 0 if up
 	 */
 	void screenTouched(int stat) {
-		ctrl[1] = stat;
+		if(cnt == -1)
+			main.newGame(Game.HEG_DIED);
+		else
+			ctrl[1] = stat;
 	}
 	
 	void start() {
@@ -149,10 +152,7 @@ class Game extends View {
 					ents[0].advMove(i, ctrl[i]);
 				}
 			}
-		} else {
-			if(cnt < -200) {
-				main.newGame(Game.HEG_DIED);
-			}
+		} else if(cnt > 0) {
 			cnt--;
 		}
 		
@@ -195,6 +195,9 @@ class Game extends View {
 			paint.setTextAlign(Paint.Align.CENTER);
 			
 			can.drawText(main.getString(R.string.game_over), Main.scrW / 2, 300, paint);
+			paint.setTextSize(30);
+			paint.setColor(Color.BLACK);
+			can.drawText(main.getString(R.string.contin), Main.scrW / 2, 400, paint);
 			
 			paint.setColor(Color.BLACK);
 			paint.setTextSize(40);

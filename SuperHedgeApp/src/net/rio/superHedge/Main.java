@@ -4,11 +4,19 @@
 package net.rio.superHedge;
 
 import android.app.Activity;
-import android.hardware.*;
+import android.content.Context;
+import android.graphics.Point;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.*;
+import android.view.Display;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 
 /**
  * Main class in SuperHedge
@@ -17,14 +25,22 @@ import android.view.View.OnTouchListener;
  */
 public class Main extends Activity implements SensorEventListener, OnTouchListener {
 	
+	static final int STAT_MENU = 0;	
+	static final int STAT_GAME = 1;
+	
+	static int scrW = 0, scrH = 0;
+	
 	private SensorManager mgr;
 	private Sensor sr;
 	private Game game;
+	private Menu menu;
+	private final Handler han =  new Handler();
+	
+	private Runnable run;
 	
 	private int curLevel;
 	private boolean isRunning;
-	final Handler han =  new Handler();
-	private Runnable run;
+	private int stat;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +49,17 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
+		/*getting the screen size*/
+		Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		scrW = size.x;
+		scrH = size.y;
+		
+		/*setting variables*/
+		stat = Main.STAT_MENU;
+		
+		/*setting seneor*/
 		mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
 		sr = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		
@@ -46,15 +73,16 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 					han.postDelayed(this, 10);
 			}
 		};
-
-		curLevel = 0;
-		newGame(Game.HEG_NEWGAME);
+		
+		showMenu();
 		
 	}
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		game.phoneMoved(((int) event.values[1]) * 2);
+		if(stat == Main.STAT_GAME) {
+			game.phoneMoved(((int) event.values[1]) * 2);	
+		}
 	}
 
 	@Override
@@ -64,8 +92,10 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 	protected void onResume() {
 		mgr.registerListener(this, sr, SensorManager.SENSOR_DELAY_FASTEST);
 		
-		isRunning = true;
-		han.postDelayed(run, 10);
+		if(stat == Main.STAT_GAME) {
+			isRunning = true;
+			han.postDelayed(run, 10);
+		}
 		
 		super.onResume();
 	}
@@ -100,6 +130,11 @@ public class Main extends Activity implements SensorEventListener, OnTouchListen
 		setContentView(game);
 		
 		game.start();
+	}
+
+	private void showMenu() {
+		menu = new Menu(this);
+		setContentView(menu);
 	}
 
 }

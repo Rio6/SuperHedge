@@ -3,11 +3,21 @@
 */
 package net.rio.superHedge;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
-import android.graphics.*;
-import android.view.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Typeface;
+import android.view.Display;
+import android.view.View;
+import android.view.WindowManager;
 
 /**
  * game manage of Super Hedge
@@ -36,8 +46,6 @@ class Game extends View {
 	 */
 	static final int HEG_DIED = 3;
 	
-	static int scrW = 0, scrH = 0;
-	
 	private Paint paint;
 	private Entity[] ents;
 	private Context con;
@@ -45,29 +53,22 @@ class Game extends View {
 	private GameRule rule;
 	
 	private int[] ctrl = {0, 0, 0};
+	private int level;
 	private int cnt = 0;
-	private boolean running;
 	
 	private static int stat;
 
 	public Game(Context con, int level) {
 		super(con);
 		
-		/*getting the screen size*/
-		Display display = ((WindowManager) con.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		scrW = size.x;
-		scrH = size.y;
-		
 		/*setting variables*/
 		this.con = con;
+		this.level = level;
 		stat = Game.HEG_NORMAL;
-		running = false;
+		cnt = -1;
 		
 		paint = new Paint();
-		paint.setColor(Color.BLACK);
-		paint.setTextSize(40);
+		paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
 		
 		aplImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(con.getResources(),
 				R.drawable.apple), 30, 40, false);
@@ -146,7 +147,7 @@ class Game extends View {
 	}
 	
 	void start() {
-		running = true;
+		cnt = 200;
 	}
 	
 	/**
@@ -159,7 +160,7 @@ class Game extends View {
 	 */
 	int tick() {
 		
-		if(running) {
+		if(cnt == 0) {
 			for(int i = 0; i < ents.length; i++) {
 				if(ents[i] == null) continue;
 				ents[i].tick();			
@@ -172,6 +173,8 @@ class Game extends View {
 			}
 			
 			invalidate();
+		} else {
+			cnt--;
 		}
 		
 		return stat;
@@ -181,19 +184,27 @@ class Game extends View {
 	protected void onDraw(Canvas can) {
 		can.drawColor(Color.parseColor("#808080"));
 		
-		for(int i = 0; i < ents.length; i++) {
-			if(ents[i] == null) continue;
-			can.drawBitmap(ents[i].getImg(), (int) (ents[i].pos[0] * (scrW / 750f)), (int) (ents[i].pos[1] * (scrH / 500f)), paint);
+		if(cnt == 0) {
+			for(int i = 0; i < ents.length; i++) {
+				if(ents[i] == null) continue;
+				can.drawBitmap(ents[i].getImg(), (int) (ents[i].pos[0] * (Main.scrW / 750f)), (int) (ents[i].pos[1] * (Main.scrH / 500f)), paint);
+			}
+			
+			can.drawBitmap(aplImg, 10, 10, paint);
+			can.drawText(" = " + rule.getApls() , 40, 50, paint);
+		} else {
+			paint.setColor(Color.YELLOW);
+			paint.setTextSize(100);
+			can.drawText("LEVEL " + (level + 1), Main.scrW / 2 - 200, 300, paint);
+			paint.setColor(Color.BLACK);
+			paint.setTextSize(40);
 		}
-		
-		can.drawBitmap(aplImg, 10, 10, paint);
-		can.drawText(" = " + rule.getApls() , 40, 50, paint);
 		
 	}
 	
 	/**
 	 * start a new game
-	 * 
+	 * change stat and tick() will return it to main
 	 */
 	static void newGame(int stat) {
 		Game.stat = stat;

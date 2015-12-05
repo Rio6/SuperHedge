@@ -14,7 +14,7 @@ import android.content.Context;
  * @author rio
  *
  */
-public class MapReader {
+class MapReader {
 	
 	JSONObject[] entDat;
 

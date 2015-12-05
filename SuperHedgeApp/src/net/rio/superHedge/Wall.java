@@ -11,7 +11,7 @@ import net.rio.superHedge.Entity;
  * 
  * @author rio
  */
-public class Wall extends Entity {
+class Wall extends Entity {
 
 	/**
 	 * 

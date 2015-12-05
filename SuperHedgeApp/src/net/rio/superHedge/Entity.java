@@ -44,7 +44,7 @@ abstract class Entity {
 		rule = new GameRule(id);
 		oriImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(con.getResources(),
 				con.getResources().getIdentifier(getTypeName(type), "drawable", con.getPackageName())),
-				(int) (size[0] * (Game.scrW / 750f)), (int) (size[1] * (Game.scrH / 500f)), false);
+				(int) (size[0] * (Main.scrW / 750f)), (int) (size[1] * (Main.scrH / 500f)), false);
 	}
 
 	/**

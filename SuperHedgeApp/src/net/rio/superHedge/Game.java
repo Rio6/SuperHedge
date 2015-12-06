@@ -121,14 +121,41 @@ class Game extends View {
 	 * @param stat 1 if down, 0 if up
 	 */
 	void screenTouched(int stat) {
-		if(cnt == -1)
-			main.newGame(Game.HEG_DIED);
-		else
-			ctrl[1] = stat;
+		if(stat == 1) {
+			if(cnt == -1) {
+				main.newGame(Game.HEG_DIED);
+				return;
+			}
+			else if(cnt == -2) {
+				resume();
+				return;
+			}
+		}
+		ctrl[1] = stat;
 	}
 	
+	/**
+	 * to stat the game
+	 */
 	void start() {
-		cnt = 200;
+		cnt = 100;
+	}
+	
+	/**
+	 *to  pause the game
+	 */
+	void pause() {
+		if(cnt == 0)			//the game is playing
+			cnt = -2;
+		else if(cnt < 0)	//the game paused or is over
+			main.showMenu();
+	}
+	
+	/**
+	 * to resume the game
+	 */
+	void resume() {
+		cnt = 0;
 	}
 	
 	/**
@@ -164,18 +191,10 @@ class Game extends View {
 	protected void onDraw(Canvas can) {
 		can.drawColor(Color.parseColor("#808080"));
 		
-		if(cnt == 0) {		//the game is running normally
+		can.drawBitmap(pauseImg, 20, 10, paint);
 			
-			for(int i = 0; i < ents.length; i++) {
-				if(ents[i] == null) continue;
-				can.drawBitmap(ents[i].getImg(), (int) (ents[i].pos[0] * (Main.scrW / 750f)), (int) (ents[i].pos[1] * (Main.scrH / 500f)), paint);
-			}
-			
-			can.drawBitmap(aplImg, Main.scrW - 120, 10, paint);
-			can.drawText(" = " + rule.getApls() , Main.scrW - 90, 50, paint);
-			
-			can.drawBitmap(pauseImg, 20, 10, paint);
-			
+		if(cnt == 0) {			//the game is playing
+			drawImgs(can);
 		} else if(cnt > 0) {		//the game is in start screen
 			
 			paint.setColor(Color.YELLOW);
@@ -188,22 +207,55 @@ class Game extends View {
 			paint.setTextSize(40);
 			paint.setTextAlign(Paint.Align.LEFT);
 			
-		} else if(cnt < 0) {		//the game is in dieing screen
+		} else if(cnt == -1) {	//the game is in dieing screen
 			
 			paint.setColor(Color.YELLOW);
 			paint.setTextSize(100);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
 			can.drawText(main.getString(R.string.game_over), Main.scrW / 2, 300, paint);
+			
 			paint.setTextSize(30);
 			paint.setColor(Color.BLACK);
-			can.drawText(main.getString(R.string.contin), Main.scrW / 2, 400, paint);
+			
+			can.drawText(main.getString(R.string.contin), Main.scrW / 2, 380, paint);
+			can.drawText(main.getString(R.string.quit), Main.scrW / 2, 425, paint);
+			
+			paint.setColor(Color.BLACK);
+			paint.setTextSize(40);
+			paint.setTextAlign(Paint.Align.LEFT);
+			
+		} else if(cnt == -2) {	//the game is in pause
+			drawImgs(can);
+			
+			paint.setColor(Color.YELLOW);
+			paint.setTextSize(100);
+			paint.setTextAlign(Paint.Align.CENTER);
+			
+			can.drawText(main.getString(R.string.paus), Main.scrW / 2, 300, paint);
+			
+			paint.setTextSize(30);
+			paint.setColor(Color.BLACK);
+			
+			can.drawText(main.getString(R.string.contin), Main.scrW / 2, 380, paint);
+			can.drawText(main.getString(R.string.quit), Main.scrW / 2, 425, paint);
 			
 			paint.setColor(Color.BLACK);
 			paint.setTextSize(40);
 			paint.setTextAlign(Paint.Align.LEFT);
 			
 		}
+	}
+	
+	private void drawImgs(Canvas can) {
+		
+		for(int i = 0; i < ents.length; i++) {
+			if(ents[i] == null) continue;
+			can.drawBitmap(ents[i].getImg(), (int) (ents[i].pos[0] * (Main.scrW / 750f)), (int) (ents[i].pos[1] * (Main.scrH / 500f)), paint);
+		}
+		
+		can.drawBitmap(aplImg, Main.scrW - 120, 10, paint);
+		can.drawText(" = " + rule.getApls() , Main.scrW - 90, 50, paint);
 		
 	}
 	

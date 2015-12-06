@@ -106,7 +106,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		
 		if(eve.getAction() == MotionEvent.ACTION_DOWN) {
 			if(eve.getX() < 60 && eve.getY() < 60)
-				showMenu();
+				game.pause();
 			else
 				game.screenTouched(1);
 		} else if(eve.getAction() == MotionEvent.ACTION_UP) {
@@ -129,7 +129,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		game.start();
 	}
 
-	private void showMenu() {
+	void showMenu() {
 		gameStat = Main.STAT_MENU;
 		isRunning = false;
 		menu = new Menu(this);

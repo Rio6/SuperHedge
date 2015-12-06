@@ -6,5 +6,7 @@
     <string name="level">LEVEL</string>
     <string name="game_over">GAME OVER</string>
     <string name="contin">TOUCH THE SCREEN TO CONTINUE</string>
+    <string name="paus">PAUSE</string>
+    <string name="quit">TOUCH ON PAUSE AGAIN TO QUIT</string>
 
 </resources>

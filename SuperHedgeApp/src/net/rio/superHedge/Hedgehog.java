@@ -31,6 +31,9 @@ class Hedgehog extends Entity {
 	void tick() {
 		tchGnd = move(3, GRAVITY / 2);
 		jump();
+		
+		if(pos[1] > 800)
+			Game.newGame(Game.HEG_DIED);
 	}
 
 	@Override

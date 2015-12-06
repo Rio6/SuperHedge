@@ -13,6 +13,7 @@ class MenuItem extends View implements View.OnTouchListener {
 	
 	private Paint paint = new Paint();
 	private Menu menu;
+	private Context con;
 	
 	private String txt;
 	private int color;
@@ -28,13 +29,15 @@ class MenuItem extends View implements View.OnTouchListener {
 	 */
 	public MenuItem(Context con, Menu menu, int width, int height, String txt) {
 		super(con);
+		
 		this.menu = menu;
+		this.con = con;
 		
 		setLayoutParams(new ViewGroup.LayoutParams(width, height));
 		setOnTouchListener(this);
 		
 		this.txt = txt;
-		color = Color.parseColor("#808080");
+		color = con.getResources().getColor(R.color.light_gray);
 
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -54,15 +57,15 @@ class MenuItem extends View implements View.OnTouchListener {
 	public boolean onTouch(View v, MotionEvent eve) {
 		
 		if(eve.getX() > getWidth() || eve.getX() < 0 || eve.getY() > getHeight() || eve.getY() < 0) {
-			color = Color.parseColor("#808080");
+			color = con.getResources().getColor(R.color.light_gray);
 			paint.setColor(Color.BLACK);
 			preDwn = false;
 		} else	if(eve.getAction() == MotionEvent.ACTION_DOWN) {
-			color = Color.parseColor("#202020");
+			color = con.getResources().getColor(R.color.dark_gray);
 			paint.setColor(Color.YELLOW);
 			preDwn = true;
 		} else if(eve.getAction() == MotionEvent.ACTION_UP && preDwn) {
-			color = Color.parseColor("#808080");
+			color = con.getResources().getColor(R.color.light_gray);
 			paint.setColor(Color.BLACK);
 			menu.onClick(v);
 			preDwn = false;

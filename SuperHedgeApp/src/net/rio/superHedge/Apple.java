@@ -25,9 +25,7 @@ class Apple extends Entity {
 	}
 	
 	@Override
-	void tick() {
-		advMove(3, GRAVITY / 2);
-	}
+	void tick() {}
 
 	@Override
 	void touched(Entity ent) {

@@ -40,17 +40,24 @@ class Hedgehog extends Entity {
 	void touched(Entity ent) {
 	}
 	
+	/**
+	 * if hedgehog is jumping then jump
+	 */
 	public void checkJump() {
 		if(cnt > 0) {
-			if(jump(cnt)) {
+			if(jump(cnt))
 				cnt /= 2;
-			}
 		} else if(cnt > Entity.GRAVITY / 2 * -1) {
 			advMove(3, Math.abs(cnt));
 		}
 		cnt--;
 	}
 	
+	/**
+	 * move up
+	 * @param speed speed for jump
+	 * @return if head touched the celing
+	 */
 	private boolean jump(int speed) {
 		pos[1] -= speed;
 		return GameRule.moveTo(id, 1);

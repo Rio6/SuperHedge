@@ -172,16 +172,19 @@ class Game extends View {
 	void tick() {
 		
 		if(cnt == 0) {
+			
+			for(int i = 0; i < ctrl.length; i++) {		//move hedgehog from user's control
+				if(ctrl[i] != 0) {
+					ents[0].advMove(i, ctrl[i]);
+					ctrl[i] = 0;
+				}
+			}
+			
 			for(int i = 0; i < ents.length; i++) {
 				if(ents[i] == null) continue;
 				ents[i].tick();			
 			}
 			
-			for(int i = 0; i < ctrl.length; i++) {
-				if(ctrl[i] != 0) {
-					ents[0].advMove(i, ctrl[i]);
-				}
-			}
 		} else if(cnt > 0) {
 			cnt--;
 		}
@@ -199,57 +202,69 @@ class Game extends View {
 		if(cnt == 0) {			//the game is playing
 			drawImgs(can);
 		} else if(cnt > 0) {		//the game is in start screen
-			
-			paint.setColor(Color.YELLOW);
-			paint.setTextSize(100);
+
+			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
 			can.drawText(main.getString(R.string.level) + (level + 1), Main.scrW / 2, 300, paint);
-			
-			paint.setColor(Color.BLACK);
-			paint.setTextSize(40);
+
+			setTextFont(1);
 			paint.setTextAlign(Paint.Align.LEFT);
 			
 		} else if(cnt == -1) {	//the game is in dieing screen
-			
-			paint.setColor(Color.YELLOW);
-			paint.setTextSize(100);
+
+			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
 			can.drawText(main.getString(R.string.game_over), Main.scrW / 2, 300, paint);
-			
-			paint.setTextSize(30);
-			paint.setColor(Color.BLACK);
+
+			setTextFont(1);
 			
 			can.drawText(main.getString(R.string.contin), Main.scrW / 2, 380, paint);
 			can.drawText(main.getString(R.string.quit), Main.scrW / 2, 425, paint);
 			
-			paint.setColor(Color.BLACK);
-			paint.setTextSize(40);
 			paint.setTextAlign(Paint.Align.LEFT);
 			
 		} else if(cnt == -2) {	//the game is in pause
 			drawImgs(can);
+
+			setTextFont(0);
 			
-			paint.setColor(Color.YELLOW);
-			paint.setTextSize(100);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
 			can.drawText(main.getString(R.string.paus), Main.scrW / 2, 300, paint);
 			
-			paint.setTextSize(30);
-			paint.setColor(Color.BLACK);
+			setTextFont(1);
 			
 			can.drawText(main.getString(R.string.contin), Main.scrW / 2, 380, paint);
 			can.drawText(main.getString(R.string.quit), Main.scrW / 2, 425, paint);
 			
-			paint.setColor(Color.BLACK);
-			paint.setTextSize(40);
 			paint.setTextAlign(Paint.Align.LEFT);
 			
 		}
 	}
 	
+	/**
+	 * set color and font in game
+	 * @param type 0 = title, 1 = text
+	 */
+	private void setTextFont(int type) {
+		switch(type) {
+		case 0:
+			paint.setColor(Color.YELLOW);
+			paint.setTextSize(100);
+			break;
+		case 1:
+			paint.setColor(Color.BLACK);
+			paint.setTextSize(40);
+			break;
+		}
+	}
+	
+	/**
+	 * draw images of entities and icons
+	 * @param can
+	 */
 	private void drawImgs(Canvas can) {
 		
 		for(int i = 0; i < ents.length; i++) {

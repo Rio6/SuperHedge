@@ -138,12 +138,17 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 			break;
 		case Game.HEG_NEXT_LEVEL:
 			curLevel++;
-			if(curLevel == levelCnt)
-				curLevel = 0;
 			break;
 		}
 		
 		level = curLevel;
+		
+		if(level == levelCnt) {
+			showMenu();
+			return;
+		} else if(level > levelCnt) {
+			return;
+		}
 		
 		game = new Game(this, level);
 		game.setOnTouchListener(this);

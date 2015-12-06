@@ -16,12 +16,10 @@ abstract class Entity {
 	
 	protected int type, id;
 	protected int[] pos, size, data;
-	protected boolean pushable = true;
+	protected boolean touchable = true;
 	
 	protected Bitmap oriImg;
 	protected Bitmap img = null;
-	
-	protected GameRule rule;
 
 	/**
 	 * 
@@ -41,7 +39,6 @@ abstract class Entity {
 		this.id = id;
 		this.data = data;
 		
-		rule = new GameRule(id);
 		oriImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(con.getResources(),
 				con.getResources().getIdentifier(getTypeName(type), "drawable", con.getPackageName())),
 				(int) (size[0] * (Main.scrW / 750f)), (int) (size[1] * (Main.scrH / 500f)), false);
@@ -61,9 +58,8 @@ abstract class Entity {
 	 * Move this entity
 	 * @param dir Direction to move, 0 => left, 1 => up, 2 => right, 3 => down
 	 * @param speed Move speed
-	 * @return true if this move hits another entity
 	 */
-	boolean move(int dir, int speed) {
+	void move(int dir, int speed) {
 		switch(dir) {
 		case 0:
 			pos[0] -= speed;
@@ -78,18 +74,27 @@ abstract class Entity {
 			pos[1] += speed;
 			break;
 		}
-
-		return rule.moveTo(dir);	//check if this entity is touched to others
 	}
 	
 	/**
 	 * advance move for entity, can override this for turning or other stuff
 	 * @param dir
 	 * @param speed
-	 * @return
+	 * @return true if this move hits another entity
 	 */
 	boolean advMove(int dir, int speed) {
-		return move(dir, speed);
+		move(dir, speed);
+		return GameRule.moveTo(id, dir);
+	}
+	
+	/**
+	 * teleport this entity to x and y
+	 * @param x
+	 * @param y
+	 */
+	void teleport(int x, int y) {
+		pos[0] = x;
+		pos[1] = y;
 	}
 	
 	/**

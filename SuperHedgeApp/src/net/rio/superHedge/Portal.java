@@ -14,8 +14,8 @@ class Portal extends Entity {
 	 * @param data Data from map file
 	 */
 	public Portal(Context con, int[] pos, int id, int... data) {
-		super(con, 1, pos, new int[]{40, 100}, id, data);
-		pushable = false;
+		super(con, 1, pos, new int[]{40, 84}, id, data);
+		touchable = false;
 	}
 
 	@Override

@@ -55,8 +55,7 @@ class Game extends View {
 		
 		setupEnts(new MapReader(main, level));
 		
-		rule = new GameRule(-1);
-		rule.setEnts(ents);
+		GameRule.setEnts(ents);
 		
 	}
 	

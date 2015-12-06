@@ -29,8 +29,8 @@ class Hedgehog extends Entity {
 
 	@Override
 	void tick() {
-		tchGnd = move(3, Entity.GRAVITY / 2);
-		jump();
+		tchGnd = advMove(3, Entity.GRAVITY / 2);
+		checkJump();
 		
 		if(pos[1] > 800)
 			Game.newGame(Game.HEG_DIED);
@@ -40,20 +40,20 @@ class Hedgehog extends Entity {
 	void touched(Entity ent) {
 	}
 	
-	public void jump() {
+	public void checkJump() {
 		if(cnt > 0) {
-			if(super.move(1, cnt)) {
+			if(jump(cnt)) {
 				cnt /= 2;
 			}
 		} else if(cnt > Entity.GRAVITY / 2 * -1) {
-			super.move(3, Math.abs(cnt));
+			advMove(3, Math.abs(cnt));
 		}
 		cnt--;
 	}
 	
-	@Override
-	boolean move(int dir, int speed) {
-		return super.move(dir, speed);
+	private boolean jump(int speed) {
+		pos[1] -= speed;
+		return GameRule.moveTo(id, 1);
 	}
 	
 	@Override
@@ -70,7 +70,8 @@ class Hedgehog extends Entity {
 			cnt = Entity.GRAVITY;
 			return false;
 		} else {
-			return move(dir, speed);
+			move(dir, speed);
+			return GameRule.moveTo(id, dir);	//check if this entity is touched to others;
 		}		
 	}
 

@@ -21,20 +21,18 @@ class Apple extends Entity {
 	 */
 	public Apple(Context con, int[] pos, int id, int... data) {
 		super(con, 2, pos, new int[]{30, 40}, id, data);
-		// TODO Auto-generated constructor stub
+		touchable = false;
 	}
 	
 	@Override
 	void tick() {
-		
-		move(3, GRAVITY / 2);
-		
+		advMove(3, GRAVITY / 2);
 	}
 
 	@Override
 	void touched(Entity ent) {
 		if(ent.type == 0) {
-			rule.removeEnt(GameRule.ENTITY_EAT, id);
+			GameRule.eatApl(id);
 		}
 	}
 

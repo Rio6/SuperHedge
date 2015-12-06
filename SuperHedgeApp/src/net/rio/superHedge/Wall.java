@@ -22,7 +22,6 @@ class Wall extends Entity {
 	 */
 	public Wall(Context con, int[] pos, int id, int... data) {
 		super(con, 4, pos, data, id, 0);
-		pushable = false;
 	}
 
 	@Override

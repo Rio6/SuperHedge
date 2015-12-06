@@ -41,12 +41,6 @@ class Dog extends Entity {
 	void touched(Entity ent) {
 		if(ent.type == 0) Game.newGame(Game.HEG_DIED);
 	}
-
-	
-	@Override
-	protected boolean move(int dir, int speed) {
-		return super.move(dir, speed);
-	}
 	
 	@Override
 	boolean advMove(int dir, int speed) {
@@ -57,7 +51,7 @@ class Dog extends Entity {
 				img = turnImg(oriImg, data[0]);
 			}
 		}
-		
-		return move(dir, speed);
+			move(dir, speed);
+			return GameRule.moveTo(id, dir);	//check if this entity is touched to others;
 	}
 }

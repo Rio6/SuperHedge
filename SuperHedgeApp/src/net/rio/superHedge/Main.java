@@ -122,6 +122,9 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		
 		int level = 0;
 		
+		if(stat == Game.HEG_DIED || stat == Game.HEG_NEWGAME)
+			GameRule.resetApl();
+		
 		game = new Game(this, level);
 		game.setOnTouchListener(this);
 		setContentView(game);

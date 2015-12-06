@@ -21,6 +21,13 @@ class GameRule {
 	}
 	
 	/**
+	 * reset apple count to 0
+	 */
+	static void resetApl() {
+		apls = 0;
+	}
+	
+	/**
 	 * if the entity who calls this is touched by another entity, this method will stop the entity
 	 * @param id entity id to check
 	 * @param dir moving direction

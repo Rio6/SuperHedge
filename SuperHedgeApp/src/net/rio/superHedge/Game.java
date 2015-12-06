@@ -21,16 +21,20 @@ class Game extends View {
 	static final int HEG_NEWGAME = 0;
 	
 	/**
+	 * start next level
+	 */
+	static final int HEG_NEXT_LEVEL = 1;
+	
+	/**
 	 * game over, retry
 	 */
-	static final int HEG_DIED = 1;
+	static final int HEG_DIED = 2;
 	
 	private static Main main;
 	
 	private Paint paint;
 	private Entity[] ents;
 	private Bitmap aplImg, pauseImg;
-	private GameRule rule;
 
 	private static int cnt = 0;
 	
@@ -254,7 +258,7 @@ class Game extends View {
 		}
 		
 		can.drawBitmap(aplImg, Main.scrW - 120, 10, paint);
-		can.drawText(" = " + rule.getApls() , Main.scrW - 90, 50, paint);
+		can.drawText(" = " + GameRule.getApls() , Main.scrW - 90, 50, paint);
 		
 	}
 	
@@ -263,11 +267,15 @@ class Game extends View {
 	 * change stat and tick() will return it to main
 	 */
 	static void newGame(int stat) {
-		if(stat == Game.HEG_NEWGAME)
-			main.newGame(Game.HEG_NEWGAME);
-		
-		else if(stat == Game.HEG_DIED)
+		switch(stat) {
+		case Game.HEG_NEWGAME:
+		case Game.HEG_NEXT_LEVEL:
+			main.newGame(stat);
+			break;
+		case Game.HEG_DIED:
 			cnt = -1;
+			break;
+		}
 	}
 
 }

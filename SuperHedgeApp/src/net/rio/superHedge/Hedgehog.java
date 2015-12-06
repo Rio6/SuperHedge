@@ -12,7 +12,7 @@ import android.content.Context;
  */
 class Hedgehog extends Entity {
 	
-	private int cnt = GRAVITY / 2 * -1;
+	private int cnt = Entity.GRAVITY / 2 * -1;
 	private boolean tchGnd = true;
 	
 	/**
@@ -29,7 +29,7 @@ class Hedgehog extends Entity {
 
 	@Override
 	void tick() {
-		tchGnd = move(3, GRAVITY / 2);
+		tchGnd = move(3, Entity.GRAVITY / 2);
 		jump();
 		
 		if(pos[1] > 800)
@@ -41,10 +41,13 @@ class Hedgehog extends Entity {
 	}
 	
 	public void jump() {
-		if(cnt > 0)
-			super.move(1, cnt);
-		else if(cnt > GRAVITY / 2 * -1)
+		if(cnt > 0) {
+			if(super.move(1, cnt)) {
+				cnt /= 2;
+			}
+		} else if(cnt > Entity.GRAVITY / 2 * -1) {
 			super.move(3, Math.abs(cnt));
+		}
 		cnt--;
 	}
 	
@@ -64,7 +67,7 @@ class Hedgehog extends Entity {
 		}
 		
 		if(dir == 1 && tchGnd) {
-			cnt = GRAVITY;
+			cnt = Entity.GRAVITY;
 			return false;
 		} else {
 			return move(dir, speed);

@@ -8,5 +8,7 @@
     <string name="contin">TOUCH THE SCREEN TO CONTINUE</string>
     <string name="paus">PAUSE</string>
     <string name="quit">TOUCH ON PAUSE AGAIN TO QUIT</string>
+    <string name="win">YOU WON</string>
+    <string name="score">SCORE: </string>
 
 </resources>

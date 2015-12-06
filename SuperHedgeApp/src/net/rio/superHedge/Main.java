@@ -144,7 +144,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		level = curLevel;
 		
 		if(level == levelCnt) {
-			showMenu();
+			game.win();
 			return;
 		} else if(level > levelCnt) {
 			return;

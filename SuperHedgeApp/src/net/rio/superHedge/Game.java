@@ -185,8 +185,12 @@ class Game extends View {
 				ents[i].tick();			
 			}
 			
-		} else if(cnt > 0) {
+		} else {
 			cnt--;
+		}
+		
+		if(cnt < -200) {
+			main.showMenu();
 		}
 		
 		invalidate();
@@ -241,6 +245,17 @@ class Game extends View {
 			
 			paint.setTextAlign(Paint.Align.LEFT);
 			
+		} else if(cnt <= -3) {	//player won
+			
+			setTextFont(0);
+			paint.setTextAlign(Paint.Align.CENTER);
+			
+			can.drawText(main.getString(R.string.win), Main.scrW / 2, 300, paint);
+
+			setTextFont(1);
+			
+			can.drawText(main.getString(R.string.score) + GameRule.getApls(), Main.scrW / 2, 380, paint);
+			
 		}
 	}
 	
@@ -291,6 +306,10 @@ class Game extends View {
 			cnt = -1;
 			break;
 		}
+	}
+	
+	void win() {
+		cnt = -3;
 	}
 
 }

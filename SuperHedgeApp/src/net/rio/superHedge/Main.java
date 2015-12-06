@@ -34,6 +34,8 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	private boolean isRunning;
 	private int gameStat;
 	
+	private int levelCnt;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +49,9 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		display.getSize(size);
 		scrW = size.x;
 		scrH = size.y;
+		
+		/*setting variables*/
+		levelCnt = R.raw.class.getFields().length;
 		
 		/*setting seneor*/
 		mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -133,6 +138,8 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 			break;
 		case Game.HEG_NEXT_LEVEL:
 			curLevel++;
+			if(curLevel == levelCnt)
+				curLevel = 0;
 			break;
 		}
 		

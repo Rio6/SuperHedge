@@ -49,7 +49,7 @@ class MenuItem extends View implements View.OnTouchListener {
 		
 		paint.setTextSize(getHeight() - 10);
 		
-		can.drawText(txt, getWidth() / 2, getHeight() - 10, paint);
+		can.drawText(txt, getWidth() / 2, getHeight() - 20, paint);
 		
 	}
 	

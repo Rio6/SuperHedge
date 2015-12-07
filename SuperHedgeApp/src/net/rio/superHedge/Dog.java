@@ -13,7 +13,7 @@ import android.content.Context;
 
 class Dog extends Entity {
 	
-	private int cnt = 400 - data[0] * 200;
+	private int cnt = 200 + data[0] * 200;
 
 	/**
 	 * 

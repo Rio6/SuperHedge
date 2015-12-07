@@ -34,6 +34,7 @@ class Menu extends RelativeLayout {
 	 * the MenuItem has been clicked
 	 */
 	void onClick(View v) {
+		Main.playSnd(0);
 		main.newGame(Game.HEG_NEWGAME);
 	}
 	

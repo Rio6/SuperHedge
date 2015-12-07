@@ -31,7 +31,7 @@ class Apple extends Entity {
 	void touched(Entity ent) {
 		if(ent.type == 0) {
 			GameRule.eatApl(id);
-			Game.playSnd(1);
+			Main.playSnd(1);
 			}
 	}
 

@@ -32,7 +32,6 @@ class Game extends View {
 	static final int HEG_DIED = 2;
 	
 	private static Main main;
-	private static SoundPool snds;
 	
 	private Paint paint;
 	private Entity[] ents;
@@ -41,7 +40,6 @@ class Game extends View {
 	private static int cnt = 0;	//the game uses cnt to get stat of game
 									//(cnt > 0 -> starting screen, cnt == 0 -> normal,
 									//cnt == -1 -> die, cnt == -2 -> pause, cnt == -3 -> win)
-	private static int[] sndId;
 	
 	private int[] ctrl = {0, 0, 0};
 	private int level;
@@ -61,14 +59,6 @@ class Game extends View {
 				R.drawable.apple), 30, 40, false);
 		pauseImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(main.getResources(),
 				R.drawable.pause), 30, 30, false);
-		
-		snds = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
-		sndId = new int[4];
-		
-		sndId[0] = snds.load(main, R.raw.start, 1);
-		sndId[1] = snds.load(main, R.raw.apple, 1);
-		sndId[2] = snds.load(main, R.raw.die, 1);
-		sndId[3] = snds.load(main, R.raw.win, 1);
 		
 		setupEnts(new MapReader(main, level));
 		
@@ -155,7 +145,6 @@ class Game extends View {
 	 */
 	void start() {
 		cnt = 100;
-		Game.playSnd(0);
 	}
 	
 	/**
@@ -164,8 +153,10 @@ class Game extends View {
 	void pause() {
 		if(cnt == 0)			//the game is playing
 			cnt = -2;
-		else if(cnt == -2 || cnt == -1)	//the game paused or is over
-			main.showMenu();
+		else if(cnt == -2 || cnt == -1)	 {//the game paused or is over
+				Main.playSnd(2);
+				main.showMenu();
+		}
 	}
 	
 	/**
@@ -180,7 +171,6 @@ class Game extends View {
 	 */
 	void win() {
 		cnt = -3;
-		Game.playSnd(3);
 	}
 	
 	/**
@@ -326,17 +316,9 @@ class Game extends View {
 			break;
 		case Game.HEG_DIED:
 			cnt = -1;
-			Game.playSnd(2);
+			Main.playSnd(2);
 			break;
 		}
-	}
-	
-	/**
-	 * play sound
-	 * @param snd 0 = start, 1 = apple, 2 = die, 3 = win
-	 */
-	static void playSnd(int snd) {
-		snds.play(sndId[snd], 1.0f, 1.0f, 0, 0, 1.0f);
 	}
 
 }

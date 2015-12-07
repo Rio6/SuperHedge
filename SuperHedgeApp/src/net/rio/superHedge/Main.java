@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.*;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.*;
 import android.view.*;
 
@@ -28,9 +30,12 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	private Sensor sr;
 	private Game game;
 	private Menu menu;
+	private static SoundPool snds;
 	private final Handler han =  new Handler();
 	
 	private Runnable run;
+	
+	private static int[] sndId;
 	
 	private int curLevel;
 	private int gameStat;
@@ -52,6 +57,14 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		scrH = size.y;
 		
 		/*setting variables*/
+		
+		snds = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+		sndId = new int[4];
+		
+		sndId[0] = snds.load(this, R.raw.start, 1);
+		sndId[1] = snds.load(this, R.raw.apple, 1);
+		sndId[2] = snds.load(this, R.raw.die, 1);
+		sndId[3] = snds.load(this, R.raw.win, 1);
 		
 		try {
 			levelCnt = getAssets().list("maps").length;
@@ -168,6 +181,14 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		isRunning = false;
 		menu = new Menu(this);
 		setContentView(menu);
+	}
+	
+	/**
+	 * play sound
+	 * @param snd 0 = start, 1 = apple, 2 = die, 3 = win
+	 */
+	static void playSnd(int snd) {
+		snds.play(sndId[snd], 1.0f, 1.0f, 0, 0, 1.0f);
 	}
 
 }

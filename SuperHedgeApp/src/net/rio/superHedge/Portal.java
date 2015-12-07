@@ -23,7 +23,10 @@ class Portal extends Entity {
 
 	@Override
 	void touched(Entity ent) {
-		if(ent.type == 0) Game.newGame(Game.HEG_NEXT_LEVEL);
+		if(ent.type == 0){
+			Main.playSnd(3);
+			Game.newGame(Game.HEG_NEXT_LEVEL);
+		}
 	}
 
 }

@@ -36,7 +36,9 @@ class Game extends View {
 	private Entity[] ents;
 	private Bitmap aplImg, pauseImg;
 
-	private static int cnt = 0;
+	private static int cnt = 0;	//the game uses cnt to get stat of game
+									//(cnt > 0 -> starting screen, cnt == 0 -> normal,
+									//cnt == -1 -> die, cnt == -2 -> pause, cnt == -3 -> win)
 	
 	private int[] ctrl = {0, 0, 0};
 	private int level;
@@ -150,7 +152,7 @@ class Game extends View {
 	void pause() {
 		if(cnt == 0)			//the game is playing
 			cnt = -2;
-		else if(cnt < 0)	//the game paused or is over
+		else if(cnt == -2 || cnt == -1)	//the game paused or is over
 			main.showMenu();
 	}
 	
@@ -159,6 +161,13 @@ class Game extends View {
 	 */
 	void resume() {
 		cnt = 0;
+	}
+	
+	/**
+	 * the player won the game
+	 */
+	void win() {
+		cnt = -3;
 	}
 	
 	/**
@@ -185,7 +194,7 @@ class Game extends View {
 				ents[i].tick();			
 			}
 			
-		} else {
+		} else if(cnt != -1 && cnt != -2) {
 			cnt--;
 		}
 		
@@ -306,10 +315,6 @@ class Game extends View {
 			cnt = -1;
 			break;
 		}
-	}
-	
-	void win() {
-		cnt = -3;
 	}
 
 }

@@ -6,7 +6,6 @@ package net.rio.superHedge;
 import org.json.*;
 
 import android.graphics.*;
-import android.media.*;
 import android.view.View;
 
 /**
@@ -43,6 +42,8 @@ class Game extends View {
 	
 	private int[] ctrl = {0, 0, 0};
 	private int level;
+	private int titSize =  Main.scrH / 8, txtSize = Main.scrH / 18;	//text size of title and text
+	private int titY = Main.scrH / 3, txtY = Main.scrH / 2;				//text Y of title and text
 
 	public Game(Main main, int level) {
 		super(main);
@@ -222,7 +223,7 @@ class Game extends View {
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
-			can.drawText(main.getString(R.string.level) + (level + 1), Main.scrW / 2, 300, paint);
+			can.drawText(main.getString(R.string.level) + (level + 1), Main.scrW / 2, titY, paint);
 
 			setTextFont(1);
 			paint.setTextAlign(Paint.Align.LEFT);
@@ -232,12 +233,12 @@ class Game extends View {
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
-			can.drawText(main.getString(R.string.game_over), Main.scrW / 2, 300, paint);
+			can.drawText(main.getString(R.string.game_over), Main.scrW / 2, titY, paint);
 
 			setTextFont(1);
 			
-			can.drawText(main.getString(R.string.contin), Main.scrW / 2, 380, paint);
-			can.drawText(main.getString(R.string.quit), Main.scrW / 2, 425, paint);
+			can.drawText(main.getString(R.string.contin), Main.scrW / 2, txtY, paint);
+			can.drawText(main.getString(R.string.quit), Main.scrW / 2, txtY + txtSize, paint);
 			
 			paint.setTextAlign(Paint.Align.LEFT);
 			
@@ -248,12 +249,12 @@ class Game extends View {
 			
 			paint.setTextAlign(Paint.Align.CENTER);
 			
-			can.drawText(main.getString(R.string.paus), Main.scrW / 2, 300, paint);
+			can.drawText(main.getString(R.string.paus), Main.scrW / 2, titY, paint);
 			
 			setTextFont(1);
 			
-			can.drawText(main.getString(R.string.contin), Main.scrW / 2, 380, paint);
-			can.drawText(main.getString(R.string.quit), Main.scrW / 2, 425, paint);
+			can.drawText(main.getString(R.string.contin), Main.scrW / 2, txtY, paint);
+			can.drawText(main.getString(R.string.quit), Main.scrW / 2, txtY + txtSize, paint);
 			
 			paint.setTextAlign(Paint.Align.LEFT);
 			
@@ -262,11 +263,11 @@ class Game extends View {
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
-			can.drawText(main.getString(R.string.win), Main.scrW / 2, 300, paint);
+			can.drawText(main.getString(R.string.win), Main.scrW / 2, titY, paint);
 
 			setTextFont(1);
 			
-			can.drawText(main.getString(R.string.score) + GameRule.getApls(), Main.scrW / 2, 380, paint);
+			can.drawText(main.getString(R.string.score) + GameRule.getApls(), Main.scrW / 2, txtY, paint);
 			
 		}
 	}
@@ -279,11 +280,11 @@ class Game extends View {
 		switch(type) {
 		case 0:
 			paint.setColor(Color.YELLOW);
-			paint.setTextSize(100);
+			paint.setTextSize(titSize);
 			break;
 		case 1:
 			paint.setColor(Color.BLACK);
-			paint.setTextSize(40);
+			paint.setTextSize(txtSize);
 			break;
 		}
 	}

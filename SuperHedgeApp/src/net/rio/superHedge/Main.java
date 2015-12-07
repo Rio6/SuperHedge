@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.*;
-import android.media.*;
 import android.os.*;
 import android.view.*;
 
@@ -29,7 +28,6 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	private Sensor sr;
 	private Game game;
 	private Menu menu;
-	private MediaPlayer bgm;
 	private final Handler han =  new Handler();
 	
 	private Runnable run;
@@ -54,9 +52,6 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		scrH = size.y;
 		
 		/*setting variables*/
-		bgm = MediaPlayer.create(this, R.raw.bgm);
-		bgm.setLooping(true);
-		bgm.setVolume(0.1f, 0.1f);
 		
 		try {
 			levelCnt = getAssets().list("maps").length;
@@ -79,8 +74,6 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		
 		showMenu();
 		
-		bgm.start();
-		
 	}
 
 	@Override
@@ -97,7 +90,6 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		mgr.registerListener(this, sr, SensorManager.SENSOR_DELAY_FASTEST);
 
 		strtTick();
-		bgm.start();
 		
 		super.onResume();
 	}
@@ -107,7 +99,6 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		mgr.unregisterListener(this);
 		
 		isRunning = false;
-		bgm.pause();
 		
 		super.onPause();
 	}

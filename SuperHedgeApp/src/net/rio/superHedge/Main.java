@@ -3,6 +3,8 @@
  */
 package net.rio.superHedge;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
@@ -51,7 +53,11 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		scrH = size.y;
 		
 		/*setting variables*/
-		levelCnt = R.raw.class.getFields().length;
+		try {
+			levelCnt = getAssets().list("maps").length;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		/*setting seneor*/
 		mgr = (SensorManager) getSystemService(SENSOR_SERVICE);

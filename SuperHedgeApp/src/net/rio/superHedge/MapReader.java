@@ -3,6 +3,7 @@
  */
 package net.rio.superHedge;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import org.json.*;
@@ -20,7 +21,12 @@ class MapReader {
 
 	public MapReader(Context con, int level) {
 		
-		Scanner rdr = new Scanner(con.getResources().openRawResource(con.getResources().getIdentifier("map" + level, "raw", con.getPackageName())));
+		Scanner rdr = null;
+		try {
+			rdr = new Scanner(con.getAssets().open("maps/map" + level + ".json"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		
 		String in = "";
 		while(rdr.hasNextLine()) {

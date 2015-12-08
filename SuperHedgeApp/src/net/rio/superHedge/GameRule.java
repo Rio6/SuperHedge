@@ -11,6 +11,7 @@ class GameRule {
 	
 	private static Entity[] ents;
 	private static int apls = 0;
+	private static int svdApl;
 
 	/**
 	 * set entities in the game
@@ -25,6 +26,20 @@ class GameRule {
 	 */
 	static void resetApl() {
 		apls = 0;
+	}
+	
+	/**
+	 * set apple count to the count when start level
+	 */
+	static void loseApl() {
+		apls = svdApl;
+	}
+	
+	/**
+	 * finished a level, save apple count
+	 */
+	static void saveApl() {
+		svdApl = apls;
 	}
 	
 	/**

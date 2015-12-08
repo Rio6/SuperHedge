@@ -149,7 +149,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		
 		switch(stat) {
 		case Game.HEG_DIED:
-			GameRule.resetApl();
+			GameRule.loseApl();
 			break;
 		case Game.HEG_NEWGAME:
 			curLevel = 0;
@@ -157,6 +157,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 			break;
 		case Game.HEG_NEXT_LEVEL:
 			curLevel++;
+			GameRule.saveApl();
 			break;
 		}
 		

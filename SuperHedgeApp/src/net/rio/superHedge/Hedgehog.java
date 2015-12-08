@@ -23,7 +23,7 @@ class Hedgehog extends Entity {
 	 */
 	public Hedgehog(Context con, int[] pos, int id, int... data) {
 		super(con, 0, pos, new int[]{100, 80}, id, data);
-		img = turnImg(oriImg, data[0]);
+		if(data[0] == 0 || data[0] == 2) img = turnImg(oriImg, data[0]);
 		
 	}
 

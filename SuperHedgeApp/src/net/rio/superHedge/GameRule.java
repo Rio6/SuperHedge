@@ -26,6 +26,7 @@ class GameRule {
 	 */
 	static void resetApl() {
 		apls = 0;
+		svdApl = 0;
 	}
 	
 	/**

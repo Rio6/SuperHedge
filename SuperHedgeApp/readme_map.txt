@@ -1,4 +1,4 @@
-The map files are in /res/raw/
+The map files are in /assets/maps
 
 It is in JSON format, root array must be "entities"
 

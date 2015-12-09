@@ -151,9 +151,9 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	/**
 	 * create a new level
 	 * @param stat there are died, newgame, nextlevel
-	 * @see Game.HEG_NEWGAME
-	 * @see Game.HEG_NEXT_LEVEL
-	 * @see Game.HEG_DIED
+	 * @see Game#HEG_NEWGAME
+	 * @see Game#HEG_NEXT_LEVEL
+	 * @see Game#HEG_DIED
 	 */
 	void newGame(int stat) {
 		

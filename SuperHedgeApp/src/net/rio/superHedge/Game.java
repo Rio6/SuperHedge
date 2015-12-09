@@ -175,12 +175,7 @@ class Game extends View {
 	}
 	
 	/**
-	 * call this every tick
-	 * @return status of game
-	 * @see Game.HEG_NORMAL
-	 * @see Game.HEG_NEWGAME
-	 * @see Game.HEG_FINISH
-	 * @see Game.HEG_DIE
+	 * call this every tick, do everything and repaint
 	 */
 	void tick() {
 		
@@ -307,7 +302,6 @@ class Game extends View {
 	
 	/**
 	 * start a new game
-	 * change stat and tick() will return it to main
 	 */
 	static void newGame(int stat) {
 		switch(stat) {

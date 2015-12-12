@@ -9,10 +9,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.*;
-import android.media.AudioManager;
-import android.media.SoundPool;
+import android.media.*;
 import android.os.*;
 import android.view.*;
+import android.widget.*;
 
 /**
  * Main class in SuperHedge
@@ -28,6 +28,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	
 	private SensorManager mgr;
 	private Sensor sr;
+	private FrameLayout lay;
 	private Game game;
 	private Menu menu;
 	private static SoundPool snds;
@@ -66,9 +67,13 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		sndId[2] = snds.load(this, R.raw.die, 1);
 		sndId[3] = snds.load(this, R.raw.win, 1);
 		
+		lay = new FrameLayout(this);
+		setContentView(lay);
+		
 		try {
 			levelCnt = getAssets().list("maps").length;
 		} catch (IOException e) {
+			levelCnt = 0;
 			e.printStackTrace();
 		}
 		
@@ -187,7 +192,9 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		
 		game = new Game(this, level);
 		game.setOnTouchListener(this);
-		setContentView(game);
+		
+		lay.removeAllViews();
+		lay.addView(game, ViewGroup.LayoutParams.MATCH_PARENT);
 		
 		game.start();
 	}
@@ -196,7 +203,8 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		gameStat = Main.STAT_MENU;
 		isRunning = false;
 		menu = new Menu(this);
-		setContentView(menu);
+		lay.removeAllViews();
+		lay.addView(menu, ViewGroup.LayoutParams.MATCH_PARENT);
 	}
 	
 	/**

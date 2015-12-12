@@ -6,7 +6,7 @@ package net.rio.superHedge;
 import org.json.*;
 
 import android.graphics.*;
-import android.view.View;
+import android.view.*;
 
 /**
  * game manage of Super Hedge
@@ -179,7 +179,7 @@ class Game extends View {
 	 */
 	void tick() {
 		
-		if(cnt == 0) {
+		if(cnt == 0) {	//the game is running normaly
 			
 			for(int i = 0; i < ctrl.length; i++) {		//move hedgehog from user's control
 				if(ctrl[i] != 0) {
@@ -193,11 +193,11 @@ class Game extends View {
 				ents[i].tick();			
 			}
 			
-		} else if(cnt != -1 && cnt != -2) {
+		} else if(cnt != -1 && cnt != -2) {	//the game is in winning screen
 			cnt--;
 		}
 		
-		if(cnt < -200) {
+		if(cnt < -200) {	//player won
 			main.showMenu();
 		}
 		

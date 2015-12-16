@@ -69,7 +69,7 @@ class Hedgehog extends Entity {
 		}
 		
 		if(dir == 1 && tchGnd) {
-			jmpFrc = (int) (Entity.GRAVITY * 1.99);
+			jmpFrc = Entity.GRAVITY * 2;
 			jmpFirTick = true;
 			return false;
 		} else {

@@ -5,6 +5,11 @@ package net.rio.superHedge;
 
 import android.content.Context;
 
+/**
+ * if the Hedgehog touch this entity, then the level is finished
+ * @author rio
+ *
+ */
 class Portal extends Entity {
 
 	/**

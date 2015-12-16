@@ -6,6 +6,7 @@ package net.rio.superHedge;
 import android.content.Context;
 
 /**
+ * this class is extend from Entity, and if Hedgehog eat this, the score would increase 
  * @author rio
  *
  */

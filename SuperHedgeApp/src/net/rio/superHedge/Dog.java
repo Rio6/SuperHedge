@@ -35,7 +35,7 @@ class Dog extends Entity {
 		cnt--;
 		if(cnt == 0) cnt = 400;
 		
-		advMove(3, GRAVITY / 2);
+		advMove(3, Entity.GRAVITY);
 	}
 
 	@Override

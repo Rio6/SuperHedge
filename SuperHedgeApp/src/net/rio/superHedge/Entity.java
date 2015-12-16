@@ -12,7 +12,7 @@ import android.graphics.*;
  */
 abstract class Entity {
 	
-	static final int GRAVITY = 26;
+	static final int GRAVITY = 14;
 	
 	protected int type, id;
 	protected int[] pos, size, data;

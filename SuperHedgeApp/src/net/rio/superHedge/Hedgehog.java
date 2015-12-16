@@ -12,8 +12,9 @@ import android.content.Context;
  */
 class Hedgehog extends Entity {
 	
-	private int cnt = Entity.GRAVITY / 2 * -1;
-	private boolean tchGnd = true;
+	private int jmpFrc;			//i use jmpFrc to calculate the force of jumping and let the jumping more naturely
+	private boolean tchGnd;
+	private boolean jmpFirTick;
 	
 	/**
 	 * @param con Context from MainActivity
@@ -29,7 +30,7 @@ class Hedgehog extends Entity {
 
 	@Override
 	void tick() {
-		tchGnd = advMove(3, Entity.GRAVITY / 2);
+		tchGnd = advMove(3, Entity.GRAVITY);
 		checkJump();
 		
 		if(pos[1] > 800)
@@ -44,23 +45,17 @@ class Hedgehog extends Entity {
 	 * if hedgehog is jumping then jump
 	 */
 	public void checkJump() {
-		if(cnt > 0) {
-			if(jump(cnt))
-				cnt /= 2;
-		} else if(cnt > Entity.GRAVITY / 2 * -1) {
-			advMove(3, Math.abs(cnt));
+		
+		if(!jmpFirTick && tchGnd) {
+			jmpFrc /= 2;	//use "/= 2" instead of = 0 to let the jumping more naturely
 		}
-		cnt--;
-	}
-	
-	/**
-	 * move up
-	 * @param speed speed for jump
-	 * @return if head touched the celing
-	 */
-	private boolean jump(int speed) {
-		pos[1] -= speed;
-		return GameRule.moveTo(id, 1);
+		if(jmpFrc > 0) {
+			if(super.advMove(1, jmpFrc))
+				jmpFrc--;	//use "--" instead of = 0 to let the jumping more naturely
+			jmpFrc--;
+		}
+		jmpFirTick = false;
+		
 	}
 	
 	@Override
@@ -74,7 +69,8 @@ class Hedgehog extends Entity {
 		}
 		
 		if(dir == 1 && tchGnd) {
-			cnt = Entity.GRAVITY;
+			jmpFrc = (int) (Entity.GRAVITY * 1.99);
+			jmpFirTick = true;
 			return false;
 		} else {
 			move(dir, speed);

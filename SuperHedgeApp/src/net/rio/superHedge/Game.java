@@ -36,14 +36,14 @@ class Game extends View {
 	private Entity[] ents;
 	private Bitmap aplImg, pauseImg;
 
-	private static int cnt = 0;	//the game uses cnt to get stat of game
+	private static int cnt;	//the game uses cnt to get stat of game
 									//(cnt > 0 -> starting screen, cnt == 0 -> normal,
 									//cnt == -1 -> die, cnt == -2 -> pause, cnt == -3 -> win)
 	
-	private int[] ctrl = {0, 0, 0};
+	private int[] ctrl = new int[4];
 	private int level;
-	private int titSize =  Main.scrH / 8, txtSize = Main.scrH / 18;	//text size of title and text
-	private int titY = Main.scrH / 3, txtY = Main.scrH / 2;				//text Y of title and text
+	private int titSize, txtSize;	//text size of title and text
+	private int titY, txtY;				//text Y position of title and text
 
 	public Game(Main main, int level) {
 		super(main);
@@ -52,6 +52,12 @@ class Game extends View {
 		Game.main = main;
 		this.level = level;
 		cnt = -1;
+		
+		titSize =  Main.scrH / 8;
+		txtSize = Main.scrH / 18;
+		
+		titY = Main.scrH / 3;
+		txtY = Main.scrH / 2;	
 		
 		paint = new Paint();
 		paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));

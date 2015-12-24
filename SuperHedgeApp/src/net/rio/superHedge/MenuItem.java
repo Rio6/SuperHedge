@@ -16,7 +16,8 @@ class MenuItem extends View implements View.OnTouchListener {
 	private Context con;
 	
 	private String txt;
-	private int color;
+	private int BColor, FColor;	//backgrounf color and foregroung color
+	private int width, height;
 	private boolean preDwn;
 
 	/**
@@ -32,45 +33,46 @@ class MenuItem extends View implements View.OnTouchListener {
 		
 		this.menu = menu;
 		this.con = con;
+		this.width = width;
+		this.height = height;
+		this.txt = txt;
 		
 		setLayoutParams(new ViewGroup.LayoutParams(width, height));
 		setOnTouchListener(this);
 		
-		this.txt = txt;
-		color = con.getResources().getColor(R.color.light_gray);
+		BColor = con.getResources().getColor(R.color.light_gray);
 
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+		paint.setTextSize(height);
+		paint.setTextScaleX(height / (paint.measureText(txt) / (width / (float) height)));
 	}
 	
 	@Override
 	protected void onDraw(Canvas can) {
-		can.drawColor(color);
-		
-		paint.setTextSize(getHeight() - 10);
-		
-		can.drawText(txt, getWidth() / 2, getHeight() - 20, paint);
-		
+		can.drawColor(BColor);
+		can.drawText(txt, width / 2, 2 * height - paint.getTextSize() * 1.1f, paint);
 	}
 	
 	@Override
 	public boolean onTouch(View v, MotionEvent eve) {
 		
 		if(eve.getX() > getWidth() || eve.getX() < 0 || eve.getY() > getHeight() || eve.getY() < 0) {
-			color = con.getResources().getColor(R.color.light_gray);
-			paint.setColor(Color.BLACK);
+			BColor = con.getResources().getColor(R.color.light_gray);
+			FColor = Color.BLACK;
 			preDwn = false;
 		} else	if(eve.getAction() == MotionEvent.ACTION_DOWN) {
-			color = con.getResources().getColor(R.color.dark_gray);
-			paint.setColor(Color.YELLOW);
+			BColor = con.getResources().getColor(R.color.dark_gray);
+			FColor = Color.YELLOW;
 			preDwn = true;
 		} else if(eve.getAction() == MotionEvent.ACTION_UP && preDwn) {
-			color = con.getResources().getColor(R.color.light_gray);
-			paint.setColor(Color.BLACK);
+			BColor = con.getResources().getColor(R.color.light_gray);
+			FColor = Color.BLACK;
 			menu.onClick(v);
 			preDwn = false;
 		}
 		
+		paint.setColor(FColor);
 		invalidate();
 		
 		return true;

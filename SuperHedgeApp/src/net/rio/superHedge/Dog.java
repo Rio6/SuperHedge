@@ -30,8 +30,8 @@ class Dog extends Entity {
 
 	@Override
 	void tick() {
-		if(cnt >= 300) advMove(2, 4);
-		else if(cnt >= 100 && cnt < 200) advMove(0, 4);
+		if(cnt > 300) advMove(2, 4);
+		else if(cnt > 100 && cnt <= 200) advMove(0, 4);
 		cnt--;
 		if(cnt == 0) cnt = 400;
 		

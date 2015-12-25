@@ -23,7 +23,7 @@ class MapReader {
 		
 		Scanner rdr = null;
 		try {
-			rdr = new Scanner(con.getAssets().open("maps/map" + level + ".json"));
+			rdr = new Scanner(con.getAssets().open("levels/level" + level + ".json"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

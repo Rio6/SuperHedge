@@ -1,4 +1,4 @@
-The map files are in /assets/maps
+The map files are in /assets/levels/level*.json
 
 It is in JSON format, root array must be "entities"
 

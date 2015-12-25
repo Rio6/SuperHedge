@@ -36,9 +36,17 @@ class Game extends View {
 	private Entity[] ents;
 	private Bitmap aplImg, pauseImg;
 
-	private static int cnt;	//the game uses cnt to get stat of game
-									//(cnt > 0 -> starting screen, cnt == 0 -> normal,
-									//cnt == -1 -> die, cnt == -2 -> pause, cnt == -3 -> win)
+	/**
+	 * the game uses cnt to get stat of game
+	 *  cnt > 0	-> starting screen,
+	 *  cnt == 0	-> normal,
+	 *  cnt == -1	-> die,
+	 *  cnt == -2	-> pause,
+	 *  cnt == -3	-> next level
+	 *  cnt < -3 > -200	-> winning screen
+	 *  cnt == -200		-> player won
+	 */
+	private static int cnt;	//
 	
 	private int[] ctrl = new int[4];
 	private int level;
@@ -199,11 +207,13 @@ class Game extends View {
 				ents[i].tick();			
 			}
 			
-		} else if(cnt != -1 && cnt != -2) {	//the game is in winning screen
+		} else if(cnt == -3) {	//next level
+			main.newGame(HEG_NEXT_LEVEL);
+		} else if(cnt < -3 || cnt >= 0) {	//the game is in winning screen or starting screen
 			cnt--;
 		}
 		
-		if(cnt < -200) {	//player won
+		if(cnt == -200) {	//player won
 			main.showMenu();
 		}
 		
@@ -259,7 +269,7 @@ class Game extends View {
 			
 			paint.setTextAlign(Paint.Align.LEFT);
 			
-		} else if(cnt <= -3) {	//player won
+		} else if(cnt < -3) {	//player won
 			
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
@@ -313,7 +323,7 @@ class Game extends View {
 		switch(stat) {
 		case Game.HEG_NEWGAME:
 		case Game.HEG_NEXT_LEVEL:
-			main.newGame(stat);
+			cnt = -3;
 			break;
 		case Game.HEG_DIED:
 			cnt = -1;

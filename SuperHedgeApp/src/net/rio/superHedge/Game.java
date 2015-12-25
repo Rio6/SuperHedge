@@ -86,9 +86,16 @@ class Game extends View {
 		ents = new Entity[tmpEnt.length];
 		for(int i = 0; i < tmpEnt.length; i++) {
 			try {
-				int tmpType = tmpEnt[i].getInt("type");
-				int[] tmpPos = getAryFromJSON(tmpEnt[i].getJSONArray("pos"));
-				int[] tmpData = getAryFromJSON(tmpEnt[i].getJSONArray("data"));
+				int tmpType = 2;
+				int[] tmpPos = {0, 0};
+				int[] tmpData = {};
+				
+				if(tmpEnt[i].has("type"))
+					tmpType = tmpEnt[i].getInt("type");
+				if(tmpEnt[i].has("pos"))
+					tmpPos = getAryFromJSON(tmpEnt[i].getJSONArray("pos"));
+				if(tmpEnt[i].has("data"))
+					tmpData = getAryFromJSON(tmpEnt[i].getJSONArray("data"));
 				
 				ents[i] = getEntFromType(tmpType, tmpPos, i, tmpData);
 			} catch (JSONException e) {

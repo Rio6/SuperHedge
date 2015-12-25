@@ -14,3 +14,9 @@ datas are different for different entity
 	apple		2		none
 	dog			3		same as hedgehog
 	wall		4		[width of wall, height of wall]
+	
+defaults:
+
+	type:	2
+	pos:	[0, 0]
+	data:	[]

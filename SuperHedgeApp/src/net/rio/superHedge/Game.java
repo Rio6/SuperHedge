@@ -192,7 +192,7 @@ class Game extends View {
 	 * the player won the game
 	 */
 	void win() {
-		cnt = -3;
+		cnt = -4;
 	}
 	
 	/**

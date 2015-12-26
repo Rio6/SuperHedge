@@ -71,7 +71,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		setContentView(lay);
 		
 		try {
-			levelCnt = getAssets().list("maps").length;
+			levelCnt = getAssets().list("levels").length;
 		} catch (IOException e) {
 			levelCnt = 0;
 			e.printStackTrace();

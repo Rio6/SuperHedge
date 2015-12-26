@@ -50,6 +50,7 @@ class Game extends View {
 	
 	private int[] ctrl = new int[4];
 	private int level;
+	private int hegInd;
 	private int titSize, txtSize;	//text size of title and text
 	private int titY, txtY;				//text Y position of title and text
 
@@ -60,6 +61,7 @@ class Game extends View {
 		Game.main = main;
 		this.level = level;
 		cnt = -1;
+		hegInd = -1;
 		
 		titSize =  Main.scrH / 8;
 		txtSize = Main.scrH / 18;
@@ -98,6 +100,8 @@ class Game extends View {
 					tmpData = getAryFromJSON(tmpEnt[i].getJSONArray("data"));
 				
 				ents[i] = getEntFromType(tmpType, tmpPos, i, tmpData);
+				if(tmpType == 0)
+					hegInd = i;
 			} catch (JSONException e) {
 				e.printStackTrace();
 				return;
@@ -203,8 +207,8 @@ class Game extends View {
 		if(cnt == 0) {	//the game is running normaly
 			
 			for(int i = 0; i < ctrl.length; i++) {		//move hedgehog from user's control
-				if(ctrl[i] != 0) {
-					ents[0].advMove(i, ctrl[i]);
+				if(ctrl[i] != 0 && hegInd != -1) {
+					ents[hegInd].advMove(i, ctrl[i]);
 					ctrl[i] = 0;
 				}
 			}

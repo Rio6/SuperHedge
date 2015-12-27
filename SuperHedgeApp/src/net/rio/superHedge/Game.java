@@ -42,11 +42,11 @@ class Game extends View {
 	private Entity[] ents;
 	private Bitmap aplImg, pauseImg;
 
+	private static int cnt;	//counting animation
 	
 	private int[] ctrl = new int[4];
 	private int level;
 	private int hegInd;
-	private int cnt;
 	private int titSize, txtSize;	//text size of title and text
 	private int titY, txtY;				//text Y position of title and text
 
@@ -192,6 +192,7 @@ class Game extends View {
 		default:
 			//doNothing
 		}
+		cnt = 100;
 	}
 	
 	/**
@@ -206,7 +207,7 @@ class Game extends View {
 	 */
 	void win() {
 		gameStat = GameStat.WIN;
-		cnt = 200;
+		cnt = 100;
 	}
 	
 	/**
@@ -236,10 +237,12 @@ class Game extends View {
 		if(cnt > 0)
 			cnt--;
 		else if(cnt == 0) {
-			if(gameStat == GameStat.START)
+			if(gameStat == GameStat.START) {
 				gameStat = GameStat.NORMAL;
-			else if(gameStat == GameStat.WIN)
+			} else if(gameStat == GameStat.WIN) {
 				main.showMenu();
+				android.util.Log.d("HAHA", "hohjp");
+			}
 		}
 		
 		invalidate();
@@ -255,17 +258,13 @@ class Game extends View {
 		if(gameStat == GameStat.NORMAL) {			//the game is playing
 			drawImgs(can);
 		} else if(gameStat == GameStat.START) {		//the game is in start screen
-			int x = Main.scrW / 100 * (cnt > 50 ? 100 - cnt : 50);
 			
 			drawImgs(can);
 					
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
-			can.drawText(main.getString(R.string.level) + (level + 1), x, titY, paint);
-
-			setTextFont(1);
-			paint.setTextAlign(Paint.Align.LEFT);
+			can.drawText(main.getString(R.string.level) + (level + 1), Main.scrW / 2, titY, paint);
 			
 		} else if(gameStat == GameStat.DIED) {	//the game is in dieing screen
 			drawImgs(can);
@@ -279,8 +278,6 @@ class Game extends View {
 			
 			can.drawText(main.getString(R.string.contin), Main.scrW / 2, txtY, paint);
 			can.drawText(main.getString(R.string.quit), Main.scrW / 2, txtY + txtSize, paint);
-			
-			paint.setTextAlign(Paint.Align.LEFT);
 			
 		} else if(gameStat == GameStat.PAUSE) {	//the game is in pause
 			drawImgs(can);
@@ -296,7 +293,6 @@ class Game extends View {
 			can.drawText(main.getString(R.string.contin), Main.scrW / 2, txtY, paint);
 			can.drawText(main.getString(R.string.quit), Main.scrW / 2, txtY + txtSize, paint);
 			
-			paint.setTextAlign(Paint.Align.LEFT);
 			
 		} else if(gameStat == GameStat.WIN) {	//player won
 			
@@ -317,14 +313,17 @@ class Game extends View {
 	 * @param type 0 = title, 1 = text
 	 */
 	private void setTextFont(int type) {
+		int s;
 		switch(type) {
 		case 0:
+			s = (int) (titSize / 5f * (cnt > 95 ? 100 - cnt : 5));
 			paint.setColor(Color.YELLOW);
-			paint.setTextSize(titSize);
+			paint.setTextSize(s);
 			break;
 		case 1:
+			s = (int) (txtSize / 5f * (cnt > 95 ? 100 - cnt : 5));
 			paint.setColor(Color.BLACK);
-			paint.setTextSize(txtSize);
+			paint.setTextSize(s);
 			break;
 		}
 	}
@@ -334,6 +333,9 @@ class Game extends View {
 	 * @param can
 	 */
 	private void drawImgs(Canvas can) {
+		paint.setColor(Color.BLACK);
+		paint.setTextAlign(Paint.Align.LEFT);
+		paint.setTextSize(txtSize);
 		
 		for(int i = 0; i < ents.length; i++) {
 			if(ents[i] == null) continue;
@@ -355,6 +357,7 @@ class Game extends View {
 			break;
 		case Game.HEG_DIED:
 			gameStat = GameStat.DIED;
+			cnt = 100;
 			Main.playSnd(2);
 			break;
 		}

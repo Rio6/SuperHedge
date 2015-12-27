@@ -190,14 +190,15 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 			public void run() {
 				gameStat = Main.STAT_GAME;
 				strtTick();
-				lay.removeAllViews();
-				lay.addView(game);
 				game.start();
 			}
 		};
 		
 		game = new Game(this, curLevel);
 		game.setOnTouchListener(this);
+		
+		lay.removeAllViews();
+		lay.addView(game);
 
 		if(gameStat == Main.STAT_MENU) {
 			hideMenu(sGame);			
@@ -213,8 +214,9 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		gameStat = Main.STAT_MENU;
 		isRunning = false;
 		
+		lay.removeView(menu);
 		lay.addView(menu);
-
+		
 		menu.animate().y(0).withEndAction(new Runnable() {
 			public void run() {
 				if(lay.getChildCount() > 1)
@@ -227,7 +229,8 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	  * @param run action after hiding
 	  */
 	private void hideMenu(Runnable run) {
-		menu.animate().y(scrH).withEndAction(run);
+		lay.addView(menu);
+		menu.animate().y(-scrH).withEndAction(run);
 	}
 	
 	/**

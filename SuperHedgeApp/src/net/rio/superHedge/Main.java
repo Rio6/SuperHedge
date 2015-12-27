@@ -70,6 +70,8 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		lay = new FrameLayout(this);
 		setContentView(lay);
 		
+		menu = new Menu(this);
+		
 		try {
 			levelCnt = getAssets().list("levels").length;
 		} catch (IOException e) {
@@ -121,6 +123,9 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 		super.onPause();
 	}
 	
+	/**
+	 * start the ticking of the game
+	 */
 	private void strtTick() {
 		
 		if(gameStat == Main.STAT_GAME && !isRunning) {
@@ -134,7 +139,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	public boolean onTouch(View v, MotionEvent eve) {
 		
 		if(eve.getAction() == MotionEvent.ACTION_DOWN) {
-			if(eve.getX() < 60 && eve.getY() < 60)
+			if(eve.getX() < 60 && eve.getY() < 60)	//touched at top left corner
 				game.pause();
 			else
 				game.screenTouched(1);
@@ -162,11 +167,6 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	 */
 	void newGame(int stat) {
 		
-		gameStat = Main.STAT_GAME;
-		strtTick();
-		
-		int level;
-		
 		switch(stat) {
 		case Game.HEG_DIED:
 			GameRule.loseApl();
@@ -181,30 +181,53 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 			break;
 		}
 		
-		level = curLevel;
-		
-		if(level == levelCnt) {
+		if(curLevel == levelCnt) {
 			game.win();
-			return;
-		} else if(level > levelCnt) {
 			return;
 		}
 		
-		game = new Game(this, level);
+		Runnable sGame = new Runnable() {
+			public void run() {
+				gameStat = Main.STAT_GAME;
+				strtTick();
+				lay.removeAllViews();
+				lay.addView(game);
+				game.start();
+			}
+		};
+		
+		game = new Game(this, curLevel);
 		game.setOnTouchListener(this);
-		
-		lay.removeAllViews();
-		lay.addView(game, ViewGroup.LayoutParams.MATCH_PARENT);
-		
-		game.start();
+
+		if(gameStat == Main.STAT_MENU) {
+			hideMenu(sGame);			
+		} else {
+			sGame.run();
+		}
 	}
 
+	/**
+	 * show the start menu of the game
+	 */
 	void showMenu() {
 		gameStat = Main.STAT_MENU;
 		isRunning = false;
-		menu = new Menu(this);
-		lay.removeAllViews();
-		lay.addView(menu, ViewGroup.LayoutParams.MATCH_PARENT);
+		
+		lay.addView(menu);
+
+		menu.animate().y(0).withEndAction(new Runnable() {
+			public void run() {
+				if(lay.getChildCount() > 1)
+					lay.removeView(game);				
+			}
+		});
+	}
+	 /**
+	  * hide the start menu 
+	  * @param run action after hiding
+	  */
+	private void hideMenu(Runnable run) {
+		menu.animate().y(scrH).withEndAction(run);
 	}
 	
 	/**

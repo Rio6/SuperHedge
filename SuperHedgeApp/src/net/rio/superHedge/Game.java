@@ -30,38 +30,38 @@ class Game extends View {
 	 */
 	static final int HEG_DIED = 2;
 	
+	private enum GameStat {	//stats of the game
+		NOTHING, START, NORMAL, DIED, PAUSE, NEXTLEVEL, WIN
+	};
+	
+	static GameStat gameStat;	//to get the stats of the game
+	
 	private static Main main;
 	
 	private Paint paint;
 	private Entity[] ents;
 	private Bitmap aplImg, pauseImg;
 
-	/**
-	 * the game uses cnt to get stat of game
-	 *  cnt > 100	-> nothing
-	 *  cnt > 0	-> starting screen,
-	 *  cnt == 0	-> normal,
-	 *  cnt == -1	-> die,
-	 *  cnt == -2	-> pause,
-	 *  cnt == -3	-> next level
-	 *  cnt < -3 > -200	-> winning screen
-	 *  cnt == -200		-> player won
-	 */
-	private static int cnt;	//
 	
 	private int[] ctrl = new int[4];
 	private int level;
 	private int hegInd;
+	private int cnt;
 	private int titSize, txtSize;	//text size of title and text
 	private int titY, txtY;				//text Y position of title and text
 
+	/** 
+	 * @param main the main class of game
+	 * @param level 0~numbers of level -1
+	 */
 	public Game(Main main, int level) {
 		super(main);
 		
 		/*setting variables*/
 		Game.main = main;
 		this.level = level;
-		cnt = 101;
+		gameStat = GameStat.NOTHING;
+		cnt = 100;
 		hegInd = -1;
 		
 		titSize =  Main.scrH / 8;
@@ -155,11 +155,11 @@ class Game extends View {
 	 */
 	void screenTouched(int stat) {
 		if(stat == 1) {
-			if(cnt == -1) {
+			if(gameStat == GameStat.DIED) {	//resume the dieing screen
 				main.newGame(Game.HEG_DIED);
 				return;
 			}
-			else if(cnt == -2) {
+			else if(gameStat == GameStat.PAUSE) {
 				resume();
 				return;
 			}
@@ -171,6 +171,7 @@ class Game extends View {
 	 * to stat the game
 	 */
 	void start() {
+		gameStat = GameStat.START;
 		cnt = 100;
 	}
 	
@@ -178,11 +179,18 @@ class Game extends View {
 	 *to  pause the game
 	 */
 	void pause() {
-		if(cnt == 0)			//the game is playing
-			cnt = -2;
-		else if(cnt == -2 || cnt == -1)	 {//the game paused or is over
-				Main.playSnd(2);
-				main.showMenu();
+		switch(gameStat) {
+		case NORMAL:
+			gameStat = GameStat.PAUSE;
+			break;
+		case PAUSE:
+		case DIED:
+			gameStat = GameStat.NOTHING;
+			Main.playSnd(2);
+			main.showMenu();
+			break;
+		default:
+			//doNothing
 		}
 	}
 	
@@ -190,14 +198,15 @@ class Game extends View {
 	 * to resume the game
 	 */
 	void resume() {
-		cnt = 0;
+		gameStat = GameStat.NORMAL;
 	}
 	
 	/**
 	 * the player won the game
 	 */
 	void win() {
-		cnt = -4;
+		gameStat = GameStat.WIN;
+		cnt = 200;
 	}
 	
 	/**
@@ -205,7 +214,7 @@ class Game extends View {
 	 */
 	void tick() {
 		
-		if(cnt == 0) {	//the game is running normaly
+		if(gameStat == GameStat.NORMAL) {	//the game is running normaly
 			
 			for(int i = 0; i < ctrl.length; i++) {		//move hedgehog from user's control
 				if(ctrl[i] != 0 && hegInd != -1) {
@@ -219,14 +228,18 @@ class Game extends View {
 				ents[i].tick();			
 			}
 			
-		} else if(cnt == -3) {	//next level
+		} else if(gameStat == GameStat.NEXTLEVEL) {	//next level
 			main.newGame(HEG_NEXT_LEVEL);
-		} else if(cnt < -3 || (cnt > 0 && cnt <= 100)) {	//the game is in winning screen or starting screen
-			cnt--;
+			return;
 		}
 		
-		if(cnt == -200) {	//player won
-			main.showMenu();
+		if(cnt > 0)
+			cnt--;
+		else if(cnt == 0) {
+			if(gameStat == GameStat.START)
+				gameStat = GameStat.NORMAL;
+			else if(gameStat == GameStat.WIN)
+				main.showMenu();
 		}
 		
 		invalidate();
@@ -239,19 +252,23 @@ class Game extends View {
 		
 		can.drawBitmap(pauseImg, 20, 10, paint);
 			
-		if(cnt == 0) {			//the game is playing
+		if(gameStat == GameStat.NORMAL) {			//the game is playing
 			drawImgs(can);
-		} else if(cnt > 0 && cnt <= 100) {		//the game is in start screen
-
+		} else if(gameStat == GameStat.START) {		//the game is in start screen
+			int x = Main.scrW / 100 * (cnt > 50 ? 100 - cnt : 50);
+			
+			drawImgs(can);
+					
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
 			
-			can.drawText(main.getString(R.string.level) + (level + 1), Main.scrW / 2, titY, paint);
+			can.drawText(main.getString(R.string.level) + (level + 1), x, titY, paint);
 
 			setTextFont(1);
 			paint.setTextAlign(Paint.Align.LEFT);
 			
-		} else if(cnt == -1) {	//the game is in dieing screen
+		} else if(gameStat == GameStat.DIED) {	//the game is in dieing screen
+			drawImgs(can);
 
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
@@ -265,7 +282,7 @@ class Game extends View {
 			
 			paint.setTextAlign(Paint.Align.LEFT);
 			
-		} else if(cnt == -2) {	//the game is in pause
+		} else if(gameStat == GameStat.PAUSE) {	//the game is in pause
 			drawImgs(can);
 
 			setTextFont(0);
@@ -281,7 +298,7 @@ class Game extends View {
 			
 			paint.setTextAlign(Paint.Align.LEFT);
 			
-		} else if(cnt < -3) {	//player won
+		} else if(gameStat == GameStat.WIN) {	//player won
 			
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);
@@ -333,12 +350,11 @@ class Game extends View {
 	 */
 	static void newGame(int stat) {
 		switch(stat) {
-		case Game.HEG_NEWGAME:
 		case Game.HEG_NEXT_LEVEL:
-			cnt = -3;
+			gameStat = GameStat.NEXTLEVEL;
 			break;
 		case Game.HEG_DIED:
-			cnt = -1;
+			gameStat = GameStat.DIED;
 			Main.playSnd(2);
 			break;
 		}

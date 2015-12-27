@@ -38,6 +38,7 @@ class Game extends View {
 
 	/**
 	 * the game uses cnt to get stat of game
+	 *  cnt > 100	-> nothing
 	 *  cnt > 0	-> starting screen,
 	 *  cnt == 0	-> normal,
 	 *  cnt == -1	-> die,
@@ -60,7 +61,7 @@ class Game extends View {
 		/*setting variables*/
 		Game.main = main;
 		this.level = level;
-		cnt = -1;
+		cnt = 101;
 		hegInd = -1;
 		
 		titSize =  Main.scrH / 8;
@@ -220,7 +221,7 @@ class Game extends View {
 			
 		} else if(cnt == -3) {	//next level
 			main.newGame(HEG_NEXT_LEVEL);
-		} else if(cnt < -3 || cnt >= 0) {	//the game is in winning screen or starting screen
+		} else if(cnt < -3 || (cnt > 0 && cnt <= 100)) {	//the game is in winning screen or starting screen
 			cnt--;
 		}
 		
@@ -240,7 +241,7 @@ class Game extends View {
 			
 		if(cnt == 0) {			//the game is playing
 			drawImgs(can);
-		} else if(cnt > 0) {		//the game is in start screen
+		} else if(cnt > 0 && cnt <= 100) {		//the game is in start screen
 
 			setTextFont(0);
 			paint.setTextAlign(Paint.Align.CENTER);

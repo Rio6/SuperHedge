@@ -253,8 +253,6 @@ class Game extends View {
 	@Override
 	protected void onDraw(Canvas can) {
 		can.drawColor(Color.parseColor("#808080"));
-		
-		can.drawBitmap(pauseImg, 20, 10, paint);
 			
 		if(gameStat == GameStat.NORMAL) {			//the game is playing
 			drawImgs(can);
@@ -310,6 +308,26 @@ class Game extends View {
 	}
 	
 	/**
+	 * draw images of entities and icons
+	 * @param can
+	 */
+	private void drawImgs(Canvas can) {
+		paint.setColor(Color.BLACK);
+		paint.setTextAlign(Paint.Align.LEFT);
+		paint.setTextSize(txtSize);
+		
+		for(int i = 0; i < ents.length; i++) {
+			if(ents[i] == null) continue;
+			can.drawBitmap(ents[i].getImg(), (int) (ents[i].pos[0] * (Main.scrW / 750f)), (int) (ents[i].pos[1] * (Main.scrH / 500f)), paint);
+		}
+		
+		can.drawBitmap(aplImg, Main.scrW - 120, 10, paint);
+		can.drawText(" = " + GameRule.getApls() , Main.scrW - 90, 50, paint);
+		can.drawBitmap(pauseImg, 20, 10, paint);
+		
+	}
+	
+	/**
 	 * set color and font in game
 	 * @param type 0 = title, 1 = text
 	 */
@@ -327,25 +345,6 @@ class Game extends View {
 			paint.setTextSize(s);
 			break;
 		}
-	}
-	
-	/**
-	 * draw images of entities and icons
-	 * @param can
-	 */
-	private void drawImgs(Canvas can) {
-		paint.setColor(Color.BLACK);
-		paint.setTextAlign(Paint.Align.LEFT);
-		paint.setTextSize(txtSize);
-		
-		for(int i = 0; i < ents.length; i++) {
-			if(ents[i] == null) continue;
-			can.drawBitmap(ents[i].getImg(), (int) (ents[i].pos[0] * (Main.scrW / 750f)), (int) (ents[i].pos[1] * (Main.scrH / 500f)), paint);
-		}
-		
-		can.drawBitmap(aplImg, Main.scrW - 120, 10, paint);
-		can.drawText(" = " + GameRule.getApls() , Main.scrW - 90, 50, paint);
-		
 	}
 	
 	/**

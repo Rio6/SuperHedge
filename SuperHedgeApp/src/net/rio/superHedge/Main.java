@@ -98,8 +98,10 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		if(gameStat == Main.STAT_GAME) 
-			game.phoneMoved(((int) event.values[1]) * 2);	
+		if(gameStat == Main.STAT_GAME) {
+			int t = ((int) event.values[1]) * 2;
+			game.phoneMoved(t > 16 ? 16 : t < -16 ? -16 : t);	
+		}
 	}
 
 	@Override

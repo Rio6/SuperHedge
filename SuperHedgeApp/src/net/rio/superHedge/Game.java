@@ -182,17 +182,18 @@ class Game extends View {
 		switch(gameStat) {
 		case NORMAL:
 			gameStat = GameStat.PAUSE;
+			cnt = 100;
 			break;
 		case PAUSE:
 		case DIED:
 			gameStat = GameStat.NOTHING;
 			Main.playSnd(2);
 			main.showMenu();
+			cnt = 100;
 			break;
 		default:
 			//doNothing
 		}
-		cnt = 100;
 	}
 	
 	/**

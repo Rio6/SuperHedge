@@ -7,12 +7,12 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Point;
 import android.hardware.*;
 import android.media.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
+import android.util.DisplayMetrics;
 
 /**
  * Main class in SuperHedge
@@ -23,8 +23,8 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	
 	static final int STAT_MENU = 0;	
 	static final int STAT_GAME = 1;
-	
-	static int scrW = 0, scrH = 0;
+
+    public static int scrW, scrH;
 	
 	private SensorManager mgr;
 	private Sensor sr;
@@ -46,16 +46,12 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
-		/*getting the screen size*/
-		Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		scrW = size.x;
-		scrH = size.y;
+
+        /*getting screen size*/
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(dm);
+        scrW = dm.widthPixels;
+        scrH = dm.heightPixels;
 		
 		/*setting variables*/
 		
@@ -110,6 +106,25 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 	@Override
 	protected void onResume() {
 		mgr.registerListener(this, sr, SensorManager.SENSOR_DELAY_FASTEST);
+
+        final View decorView = getWindow().getDecorView();
+        final int uiOptions =
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+            View.SYSTEM_UI_FLAG_FULLSCREEN |
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+        decorView.setSystemUiVisibility(uiOptions);
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    decorView.setSystemUiVisibility(uiOptions);
+                }
+            }
+        });
 
 		strtTick();
 		

@@ -74,9 +74,9 @@ class Game extends View {
 		paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 		
 		aplImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(main.getResources(),
-				R.drawable.apple), 30, 40, false);
+				R.drawable.apple), (int) (30 * (Main.scrW / 750f)), (int) (40 * (Main.scrH / 500f)), false);
 		pauseImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(main.getResources(),
-				R.drawable.pause), 30, 30, false);
+				R.drawable.pause), (int) (25 * (Main.scrW / 750f)), (int) (30 * (Main.scrH / 500f)), false);
 		
 		setupEnts(new MapReader(main, level));
 		
@@ -314,16 +314,16 @@ class Game extends View {
 	private void drawImgs(Canvas can) {
 		paint.setColor(Color.BLACK);
 		paint.setTextAlign(Paint.Align.LEFT);
-		paint.setTextSize(txtSize);
+		paint.setTextSize(aplImg.getWidth());
 		
 		for(int i = 0; i < ents.length; i++) {
 			if(ents[i] == null) continue;
 			can.drawBitmap(ents[i].getImg(), (int) (ents[i].pos[0] * (Main.scrW / 750f)), (int) (ents[i].pos[1] * (Main.scrH / 500f)), paint);
 		}
 		
-		can.drawBitmap(aplImg, Main.scrW - 120, 10, paint);
-		can.drawText(" = " + GameRule.getApls() , Main.scrW - 90, 50, paint);
-		can.drawBitmap(pauseImg, 20, 10, paint);
+		can.drawBitmap(aplImg, Main.scrW / 20 * 17, aplImg.getHeight() / 3, paint);
+		can.drawText(" = " + GameRule.getApls() , Main.scrW / 20 * 17 + aplImg.getWidth(), aplImg.getHeight(), paint);
+		can.drawBitmap(pauseImg, pauseImg.getWidth() / 3, pauseImg.getHeight() / 3, paint);
 		
 	}
 	

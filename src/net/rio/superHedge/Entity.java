@@ -32,16 +32,22 @@ abstract class Entity {
 	 * @param data data Data from map file
 	 */
 	Entity(Context con, int type, int[] pos, int[] size, int id, int... data) {
-		
+
 		this.type = type;
 		this.pos = pos;
 		this.size = size;
 		this.id = id;
 		this.data = data;
+
+        int imgW = (int) (size[0] * (Main.scrW / 750f));
+        int imgH = (int) (size[1] * (Main.scrH / 500f));
+
+        if(imgW < 1) imgW = 1;
+        if(imgH < 1) imgH = 1;
 		
 		oriImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(con.getResources(),
 				con.getResources().getIdentifier(getTypeName(type), "drawable", con.getPackageName())),
-				(int) (size[0] * (Main.scrW / 750f)), (int) (size[1] * (Main.scrH / 500f)), false);
+				imgW, imgH, false);
 	}
 
 	/**

@@ -1,8 +1,9 @@
-# SuperHedge
-SuperHedge is a game about a hedgehog, you need to go through levels and collect apples.
+# Superhedge
+Superhedge is a game about a hedgehog, you need to go through levels and collect apples.
 
 ### Download
-[https://github.com/Rio6/SuperHedge/releases](https://github.com/Rio6/SuperHedge/releases)
+- [Google Play](https://play.google.com/store/apps/details?id=net.rio.superHedge)
+- [APK](https://github.com/Rio6/SuperHedge/releases)
 
 ### Screenshots
 ![](https://github.com/Rio6/SuperHedge/raw/gh-pages/images/screenshot_0.png)

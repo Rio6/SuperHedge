@@ -3,6 +3,7 @@
  */
 package net.rio.superHedge;
 
+import android.os.Build;
 import android.view.*;
 import android.widget.*;
 
@@ -22,7 +23,10 @@ class Menu extends RelativeLayout {
         super(main);
         this.main = main;
 
-        setBackground(main.getResources().getDrawable(R.drawable.background));
+        if(Build.VERSION.SDK_INT < 16)
+            setBackgroundDrawable(main.getResources().getDrawable(R.drawable.background));
+        else
+            setBackground(main.getResources().getDrawable(R.drawable.background));
         setGravity(Gravity.CENTER);
 
         MenuItem playBtn = new MenuItem(main, this, Main.scrW / 3, Main.scrH / 5, main.getString(R.string.play));

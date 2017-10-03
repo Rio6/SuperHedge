@@ -49,7 +49,10 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
 
         /*getting screen size*/
         DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getRealMetrics(dm);
+        if(Build.VERSION.SDK_INT < 17)
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+        else
+            getWindowManager().getDefaultDisplay().getRealMetrics(dm);
         scrW = dm.widthPixels;
         scrH = dm.heightPixels;
 
@@ -116,15 +119,17 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
             View.SYSTEM_UI_FLAG_FULLSCREEN |
             View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
-        decorView.setSystemUiVisibility(uiOptions);
-        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                    decorView.setSystemUiVisibility(uiOptions);
+        if(Build.VERSION.SDK_INT >= 11) {
+            decorView.setSystemUiVisibility(uiOptions);
+            decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+                @Override
+                public void onSystemUiVisibilityChange(int visibility) {
+                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        decorView.setSystemUiVisibility(uiOptions);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         strtTick();
 
@@ -234,12 +239,17 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
         lay.removeView(menu);
         lay.addView(menu);
 
-        menu.animate().y(0).withEndAction(new Runnable() {
-            public void run() {
-                if(lay.getChildCount() > 1)
-                    lay.removeView(game);               
-            }
-        });
+        if(Build.VERSION.SDK_INT < 12) {
+            if(lay.getChildCount() > 1)
+                lay.removeView(game);
+        } else {
+            menu.animate().y(0).withEndAction(new Runnable() {
+                public void run() {
+                    if(lay.getChildCount() > 1)
+                        lay.removeView(game);               
+                }
+            });
+        }
     }
     /**
      * hide the start menu 
@@ -247,7 +257,12 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
      */
     private void hideMenu(Runnable run) {
         lay.addView(menu);
-        menu.animate().y(-scrH).withEndAction(run);
+        if(Build.VERSION.SDK_INT >= 12) {
+            menu.animate().y(-scrH).withEndAction(run);
+        } else {
+            lay.removeView(menu);
+            run.run();
+        }
     }
 
     /**

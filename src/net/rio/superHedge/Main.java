@@ -170,7 +170,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
     public boolean onTouch(View v, MotionEvent eve) {
 
         if(eve.getAction() == MotionEvent.ACTION_DOWN) {
-            if(eve.getX() < 60 && eve.getY() < 60)  //touched at top left corner
+            if(eve.getX() < 80 && eve.getY() < 80)  //touched at top left corner
                 game.pause();
             else
                 game.screenTouched(1);

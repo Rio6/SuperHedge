@@ -4,6 +4,9 @@
 package net.rio.superHedge;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
@@ -42,6 +45,10 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
     private int gameStat;
     private int levelCnt;
     private boolean isRunning;
+
+    private DateFormat formatter = new SimpleDateFormat("mm:ss");
+    private long startTime;
+    private long pauseTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +139,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
         }
 
         strtTick();
+        resumeTime();
 
         super.onResume();
     }
@@ -141,6 +149,7 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
         mgr.unregisterListener(this);
 
         isRunning = false;
+        pauseTime();
 
         super.onPause();
     }
@@ -196,6 +205,8 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
             case Game.HEG_NEWGAME:
                 curLevel = 0;
                 GameRule.resetApl();
+                startTime = System.currentTimeMillis();
+                pauseTime = startTime;
                 break;
             case Game.HEG_NEXT_LEVEL:
                 curLevel++;
@@ -273,4 +284,19 @@ public class Main extends Activity implements SensorEventListener, View.OnTouchL
         snds.play(sndId[snd], 1.0f, 1.0f, 0, 0, 1.0f);
     }
 
+    String getTime() {
+        long time = pauseTime > 0 ? pauseTime : System.currentTimeMillis();
+        return formatter.format(time - startTime);
+    }
+
+    void pauseTime() {
+        pauseTime = System.currentTimeMillis();
+    }
+
+    void resumeTime() {
+        if(pauseTime > 0) {
+            startTime += System.currentTimeMillis() - pauseTime;
+            pauseTime = 0;
+        }
+    }
 }

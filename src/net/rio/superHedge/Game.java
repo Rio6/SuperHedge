@@ -181,6 +181,7 @@ class Game extends View {
     void pause() {
         switch(gameStat) {
             case NORMAL:
+                main.pauseTime();
                 gameStat = GameStat.PAUSE;
                 cnt = 100;
                 break;
@@ -201,6 +202,7 @@ class Game extends View {
      */
     void resume() {
         gameStat = GameStat.NORMAL;
+        main.resumeTime();
     }
 
     /**
@@ -209,6 +211,7 @@ class Game extends View {
     void win() {
         gameStat = GameStat.WIN;
         cnt = 100;
+        main.pauseTime();
     }
 
     /**
@@ -231,6 +234,7 @@ class Game extends View {
             }
 
         } else if(gameStat == GameStat.NEXTLEVEL) {	//next level
+            main.pauseTime();
             main.newGame(HEG_NEXT_LEVEL);
             return;
         }
@@ -240,9 +244,9 @@ class Game extends View {
         else if(cnt == 0) {
             if(gameStat == GameStat.START) {
                 gameStat = GameStat.NORMAL;
+                main.resumeTime();
             } else if(gameStat == GameStat.WIN) {
                 main.showMenu();
-                android.util.Log.d("HAHA", "hohjp");
             }
         }
 
@@ -303,6 +307,7 @@ class Game extends View {
             setTextFont(1);
 
             can.drawText(main.getString(R.string.score) + GameRule.getApls(), Main.scrW / 2, txtY, paint);
+            can.drawText(main.getString(R.string.time) + main.getTime(), Main.scrW / 2, txtY + txtSize, paint);
 
         }
     }
@@ -324,6 +329,7 @@ class Game extends View {
         can.drawBitmap(aplImg, Main.scrW / 20 * 17, aplImg.getHeight() / 3, paint);
         can.drawText(" = " + GameRule.getApls() , Main.scrW / 20 * 17 + aplImg.getWidth(), aplImg.getHeight(), paint);
         can.drawBitmap(pauseImg, pauseImg.getWidth() / 3, pauseImg.getHeight() / 3, paint);
+        can.drawText(main.getTime(), pauseImg.getWidth() * 2, aplImg.getHeight(), paint);
 
     }
 
@@ -359,6 +365,7 @@ class Game extends View {
                 gameStat = GameStat.DIED;
                 cnt = 100;
                 Main.playSnd(2);
+                main.pauseTime();
                 break;
         }
     }

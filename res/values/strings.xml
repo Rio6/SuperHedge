@@ -10,5 +10,6 @@
     <string name="quit">TOUCH ON PAUSE AGAIN TO QUIT</string>
     <string name="win">YOU WON</string>
     <string name="score">SCORE: </string>
+    <string name="time">TIME: </string>
 
 </resources>
